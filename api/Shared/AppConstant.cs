@@ -2,6 +2,14 @@
 
 public class AppConstant
 {
+    public static class General
+    {
+        /// <summary>
+        /// path to NLog config file to configure logging
+        /// </summary>
+        public const string NLogConfigPath = "Logging/nlog.config";
+    }
+
     public static class Length
     {
         public const int L1 = 64;
