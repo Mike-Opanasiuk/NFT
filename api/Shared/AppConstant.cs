@@ -18,4 +18,25 @@ public class AppConstant
         public const int L4 = 2048;
         public const int L5 = 4096;
     }
+
+    public record Roles
+    {
+        public const string User = "User";
+    }
+
+
+    /// <summary>
+    /// jwt token lifetimes
+    /// </summary>
+    public static class JwtTokenLifetimes
+    {
+        /// <summary>
+        /// 12 hours
+        /// </summary>
+        public static readonly TimeSpan Default = TimeSpan.FromHours(12);
+        /// <summary>
+        /// 7 days
+        /// </summary>
+        public static readonly TimeSpan Longer = TimeSpan.FromDays(7);
+    }
 }
