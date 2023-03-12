@@ -38,6 +38,6 @@ public class AccountController : BaseController
     {
         var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
 
-        return Ok(await mediator.Send(new GetUserQuery(userId!)));
+        return Ok(await mediator.Send(new GetUserQuery(userId)));
     }
 }
