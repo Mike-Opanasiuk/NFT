@@ -39,4 +39,19 @@ public class AppConstant
         /// </summary>
         public static readonly TimeSpan Longer = TimeSpan.FromDays(7);
     }
+
+    public static class CdnPath
+    {
+        // Item1 - folder path
+        // Item2 - request path
+        public static Tuple<string, string> CdnDirectory = Tuple.Create(@"Cdn\", @"/cdn");
+        public static Tuple<string, string> TokenImages = Tuple.Create(@"Tokens\Images\", @"/cdn/tokens/images");
+        public static Tuple<string, string> CollectionImages = Tuple.Create(@"Collections\Images\", @"/cdn/collections/images");
+        public static Tuple<string, string> UserAvatars = Tuple.Create(@"Users/Avatars/", @"/cdn/users/avatars");
+    }
+
+    public static class FileExtension
+    {
+        public const string Jpg = ".jpg";
+    }
 }
