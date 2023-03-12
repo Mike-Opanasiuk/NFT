@@ -101,7 +101,7 @@ public class FileStorageService : IFileStorageService
         File.WriteAllBytes(filePath, Convert.FromBase64String(base64file));
 
         //return filePath; // TODO: uncomment if there is a need to get full item path
-        return Path.Combine(subfolderPath, fileName);
+        return Path.Combine(CdnPath.CdnDirectory.Item1, subfolderPath, fileName);
     }
 
     public string SaveFile(string base64file, string fileName)

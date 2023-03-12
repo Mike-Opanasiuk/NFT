@@ -8,6 +8,8 @@ public class AppConstant
         /// path to NLog config file to configure logging
         /// </summary>
         public const string NLogConfigPath = "Logging/nlog.config";
+        public const int DefaultPage = 1;
+        public const int DefaultPerPage = 12;
     }
 
     public record Length
@@ -58,5 +60,18 @@ public class AppConstant
     public record FileExtension
     {
         public const string Jpg = ".jpg";
+    }
+
+    public record SortOrder
+    {
+        public const string Asc = "asc";
+        public const string Desc = "desc";
+
+        public record By
+        {
+            public const string Price = "price";
+            public const string Date = "date";
+            public const string Name = "name";
+        }
     }
 }

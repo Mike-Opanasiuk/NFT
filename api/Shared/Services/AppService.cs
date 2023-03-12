@@ -27,7 +27,7 @@ public class AppService
 
     public static bool IsStringHasBase64Format(string base64)
     {
-        if (base64 == null)
+        if (string.IsNullOrEmpty(base64))
         {
             return false;
         }

@@ -1,4 +1,6 @@
 ﻿using Application.Features.CollectionFeatures.Commands;
+using Application.Features.CollectionFeatures.Dtos;
+using Application.Features.CollectionFeatures.Queries;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,20 +11,27 @@ using Web.Extension;
 
 namespace Web.Controllers;
 
-public class CollectionController : BaseController
+public class CollectionsController : BaseController
 {
     private readonly IMediator mediator;
     private readonly IMapper mapper;
 
-    public CollectionController(IMediator mediator, IMapper mapper)
+    public CollectionsController(IMediator mediator, IMapper mapper)
     {
         this.mediator = mediator;
         this.mapper = mapper;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<CollectionsResponseDto>> GetCollectionsAsync([FromQuery] GetCollectionsQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+
     [Authorize]
     [HttpPost("create")]
-    public async Task<IActionResult> CreateCollectionAsync(CreateCollectionRequest request)
+    public async Task<IActionResult> CreateCollectionAsync([FromBody] CreateCollectionRequest request)
     {
         var userId = HttpContext.GetCurrentUserGuid();
 

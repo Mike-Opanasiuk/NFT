@@ -1,6 +1,8 @@
 ﻿using Application.Features.AccountFeatures.Commands;
 using Application.Features.AccountFeatures.Dtos;
 using Application.Features.CollectionFeatures.Commands;
+using Application.Features.CollectionFeatures.Dtos;
+using Application.Features.TokenFeatures.Dtos;
 using AutoMapper;
 using Core.Entities;
 
@@ -17,5 +19,9 @@ public class AutoMapperProfile : Profile
         /*                          Collections                             */
         CreateMap<CreateCollectionRequest, CreateCollectionCommand>();
         CreateMap<CreateCollectionCommand, CollectionEntity>();
+        CreateMap<CollectionEntity, CollectionDto>().ReverseMap();
+
+        /*                          Tokens                             */
+        CreateMap<TokenEntity, TokenDto>().ReverseMap();
     }
 }
