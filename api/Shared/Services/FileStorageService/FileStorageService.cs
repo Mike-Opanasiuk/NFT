@@ -44,7 +44,7 @@ public class FileStorageService : IFileStorageService
     #endregion
 
     #region Private
-    private string GenerateCdnPath()
+    private static string GenerateCdnPath()
     {
         string workingDirectory = Environment.CurrentDirectory;
 
@@ -58,7 +58,7 @@ public class FileStorageService : IFileStorageService
         return cdnPath;
     }
 
-    private void CreateDirectoryIfNotExists(string path)
+    private static void CreateDirectoryIfNotExists(string path)
     {
         if (!Directory.Exists(path))
         {
@@ -66,7 +66,7 @@ public class FileStorageService : IFileStorageService
         }
     }
 
-    private string GenerateFileName(string oldFileName, Guid itemId)
+    private static string GenerateFileName(string oldFileName, Guid itemId)
     {
         var fileExtension = Path.GetExtension(oldFileName);
 
@@ -81,7 +81,7 @@ public class FileStorageService : IFileStorageService
         return fileName;
     }
 
-    private string SaveItemWithCdnSubfolder(string base64file, string oldFileName, Guid itemId, string subfolderPath = "")
+    private static string SaveItemWithCdnSubfolder(string base64file, string oldFileName, Guid itemId, string subfolderPath = "")
     {
         var fileName = GenerateFileName(oldFileName, itemId);
 
@@ -100,7 +100,8 @@ public class FileStorageService : IFileStorageService
 
         File.WriteAllBytes(filePath, Convert.FromBase64String(base64file));
 
-        return filePath;
+        //return filePath; // TODO: uncomment if there is a need to get full item path
+        return Path.Combine(subfolderPath, fileName);
     }
 
     public string SaveFile(string base64file, string fileName)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using static Shared.AppConstant;
 
 namespace Application.Features.AccountFeatures.Services;
 
@@ -22,8 +23,8 @@ public class JwtService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                    new("id", userId, ClaimValueTypes.String),
-                    new("roles", userRoles, ClaimValueTypes.String)
+                    new(Claims.Id, userId, ClaimValueTypes.String),
+                    new(Claims.Roles, userRoles, ClaimValueTypes.String)
             }),
             Expires = DateTime.UtcNow.Add(duration),
             SigningCredentials = _signingCredentials

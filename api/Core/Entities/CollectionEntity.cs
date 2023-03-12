@@ -11,6 +11,9 @@ public class CollectionEntity : BaseEntity
     public string Name { get; set; }
     public string Image { get; set; }
 
+    // foreign keys
+    public Guid AuthorId { get; set; }
+
     // navigation properties
 
     /* author of this collection */
