@@ -43,13 +43,27 @@ public class CollectionsController : BaseController
     }
 
     [Authorize]
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateCollectionAsync([FromBody] UpdateCollectionRequest request)
+    {
+        var command = mapper.Map<UpdateCollectionCommand>(request);
+        var userId = HttpContext.GetCurrentUserGuid();
+
+        command.UserId = userId;
+
+        await mediator.Send(command);
+
+        return StatusCode((int)HttpStatusCode.Created);
+    }
+
+    [Authorize]
     [HttpDelete("delete")]
     public async Task<IActionResult> DeleteCollectionAsync([FromQuery] DeleteCollectionRequest request)
     {
         var command = mapper.Map<DeleteCollectionCommand>(request);
 
         command.IsAdmin = HttpContext.IsCurrentUserAdmin();
-        command.AuthorId = HttpContext.GetCurrentUserGuid();
+        command.UserId = HttpContext.GetCurrentUserGuid();
 
         await mediator.Send(command);
 

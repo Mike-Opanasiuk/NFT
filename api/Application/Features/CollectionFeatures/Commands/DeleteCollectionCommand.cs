@@ -14,7 +14,7 @@ public class DeleteCollectionRequest
 
 public class DeleteCollectionCommand : DeleteCollectionRequest, IRequest
 {
-    public Guid AuthorId { get; set; }
+    public Guid UserId { get; set; }
     public bool IsAdmin { get; set; }
 }
 
@@ -42,7 +42,7 @@ public class DeleteCollectionHandler : IRequestHandler<DeleteCollectionCommand>
             throw new BadRequestRestException($"Collection with id {collectionId} wasn`t found");
         }
 
-        if(collection.AuthorId != request.AuthorId && !request.IsAdmin)
+        if(request.UserId != collection.AuthorId && !request.IsAdmin)
         {
             throw new BadRequestRestException($"Only owner can delete collection");
         }
