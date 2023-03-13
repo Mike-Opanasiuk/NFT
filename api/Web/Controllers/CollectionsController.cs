@@ -28,7 +28,6 @@ public class CollectionsController : BaseController
         return await mediator.Send(request);
     }
 
-
     [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateCollectionAsync([FromBody] CreateCollectionRequest request)
@@ -41,5 +40,19 @@ public class CollectionsController : BaseController
         await mediator.Send(command);
 
         return StatusCode((int)HttpStatusCode.Created);
+    }
+
+    [Authorize]
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteCollectionAsync([FromQuery] DeleteCollectionRequest request)
+    {
+        var command = mapper.Map<DeleteCollectionCommand>(request);
+
+        command.IsAdmin = HttpContext.IsCurrentUserAdmin();
+        command.AuthorId = HttpContext.GetCurrentUserGuid();
+
+        await mediator.Send(command);
+
+        return StatusCode((int)HttpStatusCode.OK);
     }
 }

@@ -20,6 +20,7 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateCollectionRequest, CreateCollectionCommand>();
         CreateMap<CreateCollectionCommand, CollectionEntity>();
         CreateMap<CollectionEntity, CollectionDto>().ReverseMap();
+        CreateMap<DeleteCollectionRequest, DeleteCollectionCommand>();
 
         /*                          Tokens                             */
         CreateMap<TokenEntity, TokenDto>().ReverseMap();
