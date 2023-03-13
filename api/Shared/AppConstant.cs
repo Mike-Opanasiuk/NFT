@@ -2,15 +2,17 @@
 
 public class AppConstant
 {
-    public static class General
+    public record General
     {
         /// <summary>
         /// path to NLog config file to configure logging
         /// </summary>
         public const string NLogConfigPath = "Logging/nlog.config";
+        public const int DefaultPage = 1;
+        public const int DefaultPerPage = 12;
     }
 
-    public static class Length
+    public record Length
     {
         public const int L1 = 64;
         public const int L2 = 256;
@@ -22,13 +24,19 @@ public class AppConstant
     public record Roles
     {
         public const string User = "User";
+        public const string Admin = "Admin";
     }
 
+    public record Claims
+    {
+        public const string Id = "id";
+        public const string Roles = "roles";
+    }
 
     /// <summary>
     /// jwt token lifetimes
     /// </summary>
-    public static class JwtTokenLifetimes
+    public record JwtTokenLifetimes
     {
         /// <summary>
         /// 12 hours
@@ -38,5 +46,33 @@ public class AppConstant
         /// 7 days
         /// </summary>
         public static readonly TimeSpan Longer = TimeSpan.FromDays(7);
+    }
+
+    public record CdnPath
+    {
+        // Item1 - folder path
+        // Item2 - request path
+        public static Tuple<string, string> CdnDirectory = Tuple.Create(@"Cdn\", @"/cdn");
+        public static Tuple<string, string> TokenImages = Tuple.Create(@"Tokens\Images\", @"/cdn/tokens/images");
+        public static Tuple<string, string> CollectionImages = Tuple.Create(@"Collections\Images\", @"/cdn/collections/images");
+        public static Tuple<string, string> UserAvatars = Tuple.Create(@"Users/Avatars/", @"/cdn/users/avatars");
+    }
+
+    public record FileExtension
+    {
+        public const string Jpg = ".jpg";
+    }
+
+    public record SortOrder
+    {
+        public const string Asc = "asc";
+        public const string Desc = "desc";
+
+        public record By
+        {
+            public const string Price = "price";
+            public const string Date = "date";
+            public const string Name = "name";
+        }
     }
 }

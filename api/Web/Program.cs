@@ -3,12 +3,16 @@ using Application.Features.AccountFeatures.Services;
 using Core.Entities;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.UnitOfWork;
+using Infrastructure.UnitOfWork.Abstract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Web;
 using Shared;
+using Shared.Services.FileStorageService;
+using Shared.Services.FileStorageService.Abstract;
 using Web;
 using Web.Extension;
 using Web.Extensions;
@@ -36,7 +40,11 @@ try
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
     builder.Services.AddBearer(builder.Configuration.GetValue<string>("Jwt:Secret"));
+
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<JwtService>();
+
+    builder.Services.AddTransient<IFileStorageService, FileStorageService>();
 
     builder.Services.AddMediatR(conf => conf.RegisterServicesFromAssembly(typeof(MediatrAssemblyReference).Assembly));
 
@@ -76,6 +84,16 @@ try
         });
     });
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy => policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+        );
+    });
+
     var app = builder.Build();
 
     app.UseSeed();
@@ -87,12 +105,16 @@ try
         app.UseSwaggerUI();
     }
 
+    app.UseCors();
+
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
     app.UseHttpsRedirection();
 
     app.UseAuthentication();
     app.UseAuthorization();
+
+    app.UseCdn();
 
     app.MapControllers();
 

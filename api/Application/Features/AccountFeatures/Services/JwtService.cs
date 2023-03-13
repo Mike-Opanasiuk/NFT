@@ -1,19 +1,20 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using static Shared.AppConstant;
 
 namespace Application.Features.AccountFeatures.Services;
 
 public class JwtService
 {
     private const string SecurityAlgorithm = SecurityAlgorithms.HmacSha512Signature;
-    private readonly SigningCredentials _signingCredentials;
-    private readonly JwtSecurityTokenHandler _jwtTokenHandler;
+    private readonly SigningCredentials signingCredentials;
+    private readonly JwtSecurityTokenHandler jwtTokenHandler;
 
     public JwtService(SymmetricSecurityKey securityKey)
     {
-        _signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithm);
-        _jwtTokenHandler = new JwtSecurityTokenHandler();
+        this.signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithm);
+        this.jwtTokenHandler = new JwtSecurityTokenHandler();
     }
 
     public string GenerateToken(string userId, string userRoles, TimeSpan duration)
@@ -22,15 +23,15 @@ public class JwtService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                    new("id", userId, ClaimValueTypes.String),
-                    new("roles", userRoles, ClaimValueTypes.String)
+                new(Claims.Id, userId),
+                new(Claims.Roles, userRoles)
             }),
             Expires = DateTime.UtcNow.Add(duration),
-            SigningCredentials = _signingCredentials
+            SigningCredentials = signingCredentials
         };
 
-        var token = _jwtTokenHandler.CreateToken(descriptor);
+        var token = jwtTokenHandler.CreateToken(descriptor);
 
-        return _jwtTokenHandler.WriteToken(token);
+        return jwtTokenHandler.WriteToken(token);
     }
 }

@@ -6,28 +6,27 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Controllers.Abstract;
+using Web.Extension;
 
 namespace Web.Controllers;
 
 public class AccountController : BaseController
 {
-    private readonly IMapper mapper;
     private readonly IMediator mediator;
 
-    public AccountController(IMediator mediator, IMapper mapper)
+    public AccountController(IMediator mediator)
     {
         this.mediator = mediator;
-        this.mapper = mapper;
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterUserCommand command)
+    public async Task<ActionResult<AuthResponse>> RegisterAsync([FromBody] RegisterUserCommand command)
     {
         return await mediator.Send(command);
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginUserCommand command)
+    public async Task<ActionResult<AuthResponse>> LoginAsync([FromBody] LoginUserCommand command)
     {
         return await mediator.Send(command);
     }
@@ -36,8 +35,8 @@ public class AccountController : BaseController
     [HttpGet("profile")]
     public async Task<ActionResult<UserDto>> GetUserAsync()
     {
-        var userId = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+        var userId = HttpContext.GetCurrentUserId();
 
-        return Ok(await mediator.Send(new GetUserQuery(userId!)));
+        return Ok(await mediator.Send(new GetUserQuery(userId)));
     }
 }

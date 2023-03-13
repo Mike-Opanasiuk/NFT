@@ -1,5 +1,8 @@
 ﻿using Application.Features.AccountFeatures.Commands;
 using Application.Features.AccountFeatures.Dtos;
+using Application.Features.CollectionFeatures.Commands;
+using Application.Features.CollectionFeatures.Dtos;
+using Application.Features.TokenFeatures.Dtos;
 using AutoMapper;
 using Core.Entities;
 
@@ -12,5 +15,16 @@ public class AutoMapperProfile : Profile
         /*                          Users                             */
         CreateMap<UserEntity, UserDto>().ReverseMap();
         CreateMap<RegisterUserCommand, UserEntity>();
+
+        /*                          Collections                             */
+        CreateMap<CreateCollectionRequest, CreateCollectionCommand>();
+        CreateMap<CreateCollectionCommand, CollectionEntity>();
+        CreateMap<CollectionEntity, CollectionDto>().ReverseMap();
+        CreateMap<DeleteCollectionRequest, DeleteCollectionCommand>();
+        CreateMap<UpdateCollectionCommand, CollectionEntity>();
+        CreateMap<UpdateCollectionRequest, UpdateCollectionCommand>();
+
+        /*                          Tokens                             */
+        CreateMap<TokenEntity, TokenDto>().ReverseMap();
     }
 }
