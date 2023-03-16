@@ -36,12 +36,12 @@ public class GetCollectionsHandler : IRequestHandler<GetCollectionsQuery, Collec
             .Include(c => c.Author)
             .AsQueryable();
 
-        collections = SortCollections(collections, request.OrderBy, request.Order);
-
         if(!string.IsNullOrEmpty(request.SearchString))
         {
             collections = collections.Where(c => c.Name.Contains(request.SearchString));
         }
+
+        collections = SortCollections(collections, request.OrderBy, request.Order);
 
         collections = AppService.Paginate(
             collections, 

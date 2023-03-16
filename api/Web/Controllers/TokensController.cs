@@ -1,4 +1,6 @@
 ﻿using Application.Features.TokenFeatures.Commands;
+using Application.Features.TokenFeatures.Dtos;
+using Application.Features.TokenFeatures.Queries;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +19,12 @@ public class TokensController : BaseController
     {
         this.mediator = mediator;
         this.mapper = mapper;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<TokensResponseDto>> GetTokensAsync([FromQuery] GetTokensQuery request)
+    {
+        return await mediator.Send(request);
     }
 
     [Authorize]
