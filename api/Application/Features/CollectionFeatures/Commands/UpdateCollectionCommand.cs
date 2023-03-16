@@ -8,7 +8,7 @@ using Shared.Services.FileStorageService.Abstract;
 
 namespace Application.Features.CollectionFeatures.Commands;
 
-public class UpdateCollectionRequest : IRequest
+public class UpdateCollectionRequest
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -50,7 +50,6 @@ public class UpdateCollectionHandler : IRequestHandler<UpdateCollectionCommand>
         {
             throw new BadRequestRestException($"Only owner can update collection");
         }
-
 
         if(collection.Image != request.ImageName // if image name is different it means that image was changed
             && !string.IsNullOrEmpty(request.Image)) // if new image is not empty

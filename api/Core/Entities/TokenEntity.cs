@@ -9,10 +9,13 @@ public class TokenEntity : BaseEntity
     // properties
 
     public string Name { get; set; }
-    public string Picture { get; set; }
+    public string Image { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
-    public string Currency { get; set; }
+
+    // foreign keys
+    public Guid AuthorId { get; set; }
+    public Guid CollectionId { get; set; }
 
     // navigation properties
 

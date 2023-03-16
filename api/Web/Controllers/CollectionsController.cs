@@ -53,7 +53,7 @@ public class CollectionsController : BaseController
 
         await mediator.Send(command);
 
-        return StatusCode((int)HttpStatusCode.Created);
+        return StatusCode((int)HttpStatusCode.OK);
     }
 
     [Authorize]

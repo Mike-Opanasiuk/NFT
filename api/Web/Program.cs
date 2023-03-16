@@ -50,7 +50,10 @@ try
 
     builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddNewtonsoftJson(options =>
+        // to ingore loop inside entities that reference each other
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddValidatorsFromAssemblyContaining<FluentValidationAssemblyReference>(ServiceLifetime.Transient);
