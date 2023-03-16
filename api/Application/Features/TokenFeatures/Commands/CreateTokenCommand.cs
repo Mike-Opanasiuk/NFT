@@ -8,7 +8,7 @@ using Shared.Services.FileStorageService.Abstract;
 
 namespace Application.Features.TokenFeatures.Commands;
 
-public record CreateTokenRequest : IRequest
+public record CreateTokenRequest
 {
     public string Name { get; set; }
     public string Image { get; set; }

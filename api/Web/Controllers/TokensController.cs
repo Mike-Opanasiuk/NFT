@@ -10,6 +10,7 @@ using Web.Extension;
 
 namespace Web.Controllers;
 
+[Authorize]
 public class TokensController : BaseController
 {
     private readonly IMediator mediator;
@@ -21,13 +22,13 @@ public class TokensController : BaseController
         this.mapper = mapper;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<TokensResponseDto>> GetTokensAsync([FromQuery] GetTokensQuery request)
     {
         return await mediator.Send(request);
     }
 
-    [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateTokenAsync([FromBody] CreateTokenRequest request)
     {
@@ -40,7 +41,19 @@ public class TokensController : BaseController
         return StatusCode(StatusCodes.Status201Created);
     }
 
-    [Authorize]
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateTokenAsync([FromBody] UpdateTokenRequest request)
+    {
+        var command = mapper.Map<UpdateTokenCommand>(request);
+        var userId = HttpContext.GetCurrentUserGuid();
+
+        command.UserId = userId;
+
+        await mediator.Send(command);
+
+        return StatusCode(StatusCodes.Status200OK);
+    }
+
     [HttpDelete("delete")]
     public async Task<IActionResult> DeleteTokenAsync([FromQuery] DeleteTokenRequest request)
     {

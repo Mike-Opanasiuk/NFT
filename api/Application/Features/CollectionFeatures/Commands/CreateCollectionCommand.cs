@@ -8,7 +8,7 @@ using Shared.Services.FileStorageService.Abstract;
 
 namespace Application.Features.CollectionFeatures.Commands;
 
-public record CreateCollectionRequest : IRequest
+public record CreateCollectionRequest
 {
     public string Name { get; set; }
     public string Image { get; set; }

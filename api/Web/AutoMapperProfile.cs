@@ -30,5 +30,7 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateTokenCommand, TokenEntity>();
         CreateMap<CreateTokenRequest, CreateTokenCommand>();
         CreateMap<DeleteTokenRequest, DeleteTokenCommand>();
+        CreateMap<UpdateTokenCommand, TokenEntity>();
+        CreateMap<UpdateTokenRequest, UpdateTokenCommand>();
     }
 }
