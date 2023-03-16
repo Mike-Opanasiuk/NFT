@@ -9,7 +9,6 @@ public class TokenDto
     public string Picture { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
-    public string Currency { get; set; }
 
     public CollectionDto Collection { get; set; }
 

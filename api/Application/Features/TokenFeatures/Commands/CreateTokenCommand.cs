@@ -6,36 +6,40 @@ using Shared.CommonExceptions;
 using Shared.Services;
 using Shared.Services.FileStorageService.Abstract;
 
-namespace Application.Features.CollectionFeatures.Commands;
+namespace Application.Features.TokenFeatures.Commands;
 
-public record CreateCollectionRequest : IRequest
+public record CreateTokenRequest : IRequest
 {
     public string Name { get; set; }
     public string Image { get; set; }
     public string ImageName { get; set; }
+    public string Description { get; set; }
+    public decimal Price { get; set; }
+
+    public Guid CollectionId { get; set; }
 }
 
-public record CreateCollectionCommand : CreateCollectionRequest, IRequest
+public record CreateTokenCommand : CreateTokenRequest, IRequest
 {
     public Guid AuthorId { get; set; }
 }
 
-public class CreateCollectionHandler : IRequestHandler<CreateCollectionCommand>
+public class CreateTokenHandler : IRequestHandler<CreateTokenCommand>
 {
     private readonly IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
     private readonly IFileStorageService fileStorageService;
 
-    public CreateCollectionHandler(IMapper mapper, IUnitOfWork unitOfWork, IFileStorageService fileStorageService)
+    public CreateTokenHandler(IMapper mapper, IUnitOfWork unitOfWork, IFileStorageService fileStorageService)
     {
         this.mapper = mapper;
         this.unitOfWork = unitOfWork;
         this.fileStorageService = fileStorageService;
     }
 
-    public async Task Handle(CreateCollectionCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateTokenCommand request, CancellationToken cancellationToken)
     {
-        var collectionEntity = mapper.Map<CollectionEntity>(request);
+        var tokenEntity = mapper.Map<TokenEntity>(request);
 
         if (!string.IsNullOrEmpty(request.Image))
         {
@@ -45,10 +49,10 @@ public class CreateCollectionHandler : IRequestHandler<CreateCollectionCommand>
             }
 
             var actualImagePath = fileStorageService.SaveTokenImage(request.Image, request.ImageName, Guid.NewGuid());
-            collectionEntity.Image = actualImagePath;
+            tokenEntity.Image = actualImagePath;
         }
 
-        await unitOfWork.Collections.InsertAsync(collectionEntity);
+        await unitOfWork.Tokens.InsertAsync(tokenEntity);
         await unitOfWork.SaveChangesAsync();
     }
 }

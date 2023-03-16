@@ -2,6 +2,7 @@
 using Application.Features.AccountFeatures.Dtos;
 using Application.Features.CollectionFeatures.Commands;
 using Application.Features.CollectionFeatures.Dtos;
+using Application.Features.TokenFeatures.Commands;
 using Application.Features.TokenFeatures.Dtos;
 using AutoMapper;
 using Core.Entities;
@@ -26,5 +27,7 @@ public class AutoMapperProfile : Profile
 
         /*                          Tokens                             */
         CreateMap<TokenEntity, TokenDto>().ReverseMap();
+        CreateMap<CreateTokenCommand, TokenEntity>();
+        CreateMap<CreateTokenRequest, CreateTokenCommand>();
     }
 }
