@@ -29,5 +29,6 @@ public class AutoMapperProfile : Profile
         CreateMap<TokenEntity, TokenDto>().ReverseMap();
         CreateMap<CreateTokenCommand, TokenEntity>();
         CreateMap<CreateTokenRequest, CreateTokenCommand>();
+        CreateMap<DeleteTokenRequest, DeleteTokenCommand>();
     }
 }

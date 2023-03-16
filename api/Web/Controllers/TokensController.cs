@@ -39,4 +39,18 @@ public class TokensController : BaseController
 
         return StatusCode(StatusCodes.Status201Created);
     }
+
+    [Authorize]
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteTokenAsync([FromQuery] DeleteTokenRequest request)
+    {
+        var command = mapper.Map<DeleteTokenCommand>(request);
+
+        command.IsAdmin = HttpContext.IsCurrentUserAdmin();
+        command.UserId = HttpContext.GetCurrentUserGuid();
+
+        await mediator.Send(command);
+
+        return StatusCode(StatusCodes.Status200OK);
+    }
 }
