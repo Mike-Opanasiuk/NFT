@@ -1,6 +1,7 @@
 ﻿using Application.Features.AccountFeatures.Commands;
 using Application.Features.AccountFeatures.Dtos;
 using Application.Features.AccountFeatures.Queries;
+using Application.Features.CollectionFeatures.Dtos;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -38,5 +39,17 @@ public class AccountController : BaseController
         var userId = HttpContext.GetCurrentUserId();
 
         return Ok(await mediator.Send(new GetUserQuery(userId)));
+    }
+
+    [HttpGet("{userId}/collections")]
+    public async Task<ActionResult<IEnumerable<CollectionDto>>> GetUserCollectionsAsync([FromRoute] Guid userId)
+    {
+        return Ok(await mediator.Send(new GetUserCollectionsQuery(userId)));
+    }
+
+    [HttpGet("{userId}/tokens")]
+    public async Task<ActionResult<IEnumerable<CollectionDto>>> GetUserTokensAsync([FromRoute] Guid userId)
+    {
+        return Ok(await mediator.Send(new GetUserTokensQuery(userId)));
     }
 }

@@ -44,7 +44,7 @@ public class CreateCollectionHandler : IRequestHandler<CreateCollectionCommand>
                 throw new BadRequestRestException("Input image string was not in base64 format");
             }
 
-            var actualImagePath = fileStorageService.SaveTokenImage(request.Image, request.ImageName, Guid.NewGuid());
+            var actualImagePath = fileStorageService.SaveCollectionImage(request.Image, request.ImageName, Guid.NewGuid());
             collectionEntity.Image = actualImagePath;
         }
 
