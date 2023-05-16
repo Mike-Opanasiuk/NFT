@@ -28,6 +28,12 @@ public class CollectionsController : BaseController
         return await mediator.Send(request);
     }
 
+    [HttpGet("{collectionId}")]
+    public async Task<ActionResult<CollectionDto>> GetCollectionsAsync([FromRoute] Guid collectionId)
+    {
+        return await mediator.Send(new GetCollectionByIdQuery() { Id = collectionId });
+    }
+
     [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> CreateCollectionAsync([FromBody] CreateCollectionRequest request)
