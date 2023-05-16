@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { IItem } from '../Home';
+import { ICollection } from '../Home';
 import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
 
 const CollectionPage = () => {
+    useEffect(() => {
+        // 👇️ scroll to top on page load
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, []);
     let url: string = `${BASE_API_URL}/Collections?SearchString=`;
-    const { name } = useParams();
-    const [data, setData] = useState<IItem[]>([]);
-    const [number, setNumber] = useState<number>(1);
+    const { id } = useParams();
+    let [data, setData] = useState<ICollection>();
     // console.log(name);
     useEffect(() => {
-        axios.get(url + name).then((res) => {
-            Array.from(res.data.collections).forEach((item: any) => {
-                // console.log(item);
-                if (item.name === name) {
-                    setData([item]);
-                }
+        try {
+            axios.get(BASE_API_URL + `/Collections/${id}`).then((res) => {
+                setData(res.data);
             });
-        });
-        // console.log(data,"data");
+        } catch (e: any) {
+            // console.error(e);
+            console.log("Error: " + e);
+        }
     }, []);
 
 
@@ -29,19 +31,21 @@ const CollectionPage = () => {
                 <div className='row'>
                     <div className='col-md-6'>
                         <img
-                            src={`${BASE_URL}/` + data[0]?.image ?? 'https://azk.imgix.net/images/ee1d0116-ff80-4a31-a4a9-33bc554c4a0e.png?w=2048'}
-                            alt='Product image' className='img-fluid' />
+                            src={data?.image == null ?
+                                '../ImageNotFound.png'
+                                 : `${BASE_URL}/${data?.image}`}
+                            alt='Product image' />
                     </div>
                     <div className='col-md-6'>
-                        <h2>{data[0]?.name}</h2>
+                        <h2>{data?.name}</h2>
                         <p className='text-muted'>{
-                            data[0]?.tokens[0]?.author?.userName || 'One-Gem-123'
+                            data?.tokens[0]?.author?.userName || 'One-Gem-123'
                         }</p>
-                        <p className='text-success h4 d-block'>{data[0]?.tokens[0]?.price || '145'}$</p>
+                        <p className='text-success h4 d-block'>{data?.tokens[0]?.price || '145'}$</p>
 
                         <p>
                             {
-                                data[0]?.tokens[0]?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper malesuada justo,non posuere quam tempus vitae.'
+                                data?.tokens[0]?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper malesuada justo,non posuere quam tempus vitae.'
                             }
                         </p>
                         <div className='d-flex align-items-center'>

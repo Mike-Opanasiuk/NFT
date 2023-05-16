@@ -13,7 +13,7 @@ type AUTHOR = {
 
 let defaultPerPage = 9;
 
-export interface Product {
+export interface Token {
     id: string;
     name: string;
     image: string;
@@ -26,12 +26,12 @@ export interface Product {
 type Func<T, R> = (arg: T) => R;
 
 
-export interface IItem {
+export interface ICollection {
     id: string;
     name: string;
     image: string;
     author: AUTHOR;
-    tokens: Product[];
+    tokens: Token[];
 }
 
 type Status = 'Loading...' | 'Not Found' | 'Success';
@@ -84,7 +84,7 @@ const Home = () => {
         }, 500)
     , []);
 
-    const [data, setData] = useState<IItem[]>([]);
+    const [data, setData] = useState<ICollection[]>([]);
     useEffect(() => {
         if (category !== '') {
             setStatus('Loading...');
@@ -191,13 +191,17 @@ const Home = () => {
     const statAndData = compose(filtered, statused);
     // console.log(statAndData(data), 'statAndData(data)');
 
-    const state = (arg: IItem[]) => statAndData(arg);
+    const state = (arg: ICollection[]) => statAndData(arg);
 
     const setSearch = () => {
-        if (inputRef.current) {
+        if (inputRef.current && page) {
+            setCategory(inputRef.current.value);
+            setPage(1);
+        } else if(inputRef.current){
             setCategory(inputRef.current.value);
         }
     };
+    
     // if(inputRef.current) {
     //     inputRef.current!.value = category ?? '';
     // }

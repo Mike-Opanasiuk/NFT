@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { updateAction } from '../../store/reducers/collections';
 
 import "./Card.scss"
 import { Alert } from 'components/Alert';
-import { BASE_API_URL } from '../../react-app-env.d';
-import { BASE_URL } from '../../react-app-env.d';
+import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
 
 const Card = ({ title, author, update, image, price, id, onClick }: {
     update: () => void
@@ -27,7 +26,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
     let [showAlert, setShowAlert] = useState<boolean>();
 
     const viewCollection = () => {
-        navigate(`/collections/${title.trim()}`);
+        navigate(`/collection/${id}`);
     };
     const authToken = localStorage.getItem('access_token');
     let [errMsg, setErrMsg] = useState<string>("");

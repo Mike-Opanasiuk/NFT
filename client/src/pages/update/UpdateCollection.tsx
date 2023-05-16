@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Alert } from 'components/Alert';
-import { BASE_API_URL } from '../../react-app-env.d';
+import { BASE_URL, BASE_API_URL } from '../../react-app-env.d';
 
 
 interface IItem {
@@ -18,11 +18,28 @@ const UpdateCollection = () => {
         // 👇️ scroll to top on page load
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }, []);
+    // console.log(id);
+    const { id } = useParams();
+    useEffect(() => {
+        try {
+            axios.get(BASE_API_URL + `/Collections/${id}`).then((res) => {
+                if(res.data.image) {
+                    setCollectionStartImage(BASE_URL + '/' + res.data.image);
+                }
+                else {
+                    setCollectionStartImage("../ImageNotFound.png");
+                }
+                changeHandler('name')(res.data.name);
+            });
+        } catch (e: any) {
+            // console.error(e);
+            console.log("Error: " + e);
+        }
+    }, []);
+
     const [status, setStatus] = useState<string>('');
-    const [Image, setImage] = useState({
-        image: '',
-        imageName: ''
-    });
+   
+    let [collectionStartImage, setCollectionStartImage] = useState<string>("");
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [form, setForm] = useState<IItem>({
         id: '',
@@ -90,7 +107,7 @@ const UpdateCollection = () => {
                         setAlertMessage("Please, login first");
                         setShowAlert(true);
                     }
-                    else if(error.response.status == 400) {
+                    else if (error.response.status == 400) {
                         setAlertMessage(error.response.data.Message)
                         setShowAlert(true);
                     }
@@ -112,6 +129,8 @@ const UpdateCollection = () => {
         let file = e.target.files[0];
         // console.log(file);
         if (file) {
+            var imagePath = URL.createObjectURL(e.target.files[0]);
+            setCollectionStartImage(imagePath);
             // console.log("12345578");
             setForm({
                 ...form,
@@ -123,7 +142,7 @@ const UpdateCollection = () => {
         }
 
     };
-    if(showAlert) {
+    if (showAlert) {
         setTimeout(() => {
             setShowAlert(false);
         }, 5000);
@@ -136,13 +155,14 @@ const UpdateCollection = () => {
             ) : (
                 <span></span>
             )}
-            <h1 className='mb-1'>Update collection</h1>
-            <p className='mb-4' onClick={() => {
+
+            <h1 className='mb-5 d-flex flex-column align-items-center w-100'>Update collection</h1>
+            <p className='mb-4 d-flex flex-column align-items-center w-100' onClick={() => {
                 if (inputRef.current !== null) {
                     inputRef.current.click();
                 }
             }}>
-                click for upload image collection
+                <img height="300px" src={collectionStartImage}></img>
             </p>
             <div>
                 <div className={'d-none'}>
@@ -159,8 +179,8 @@ const UpdateCollection = () => {
                         <label htmlFor='title' className='mb-3'>Collection Name</label>
                         <input type='text' onChange={(e) => changeHandler('name')(e.target.value)} value={form.name} />
                     </div>
-                    <div className='d-flex flex-column mb-5 w-50'>
-                        <label htmlFor='title' className='mb-3'>Collection Name</label>
+                    <div className='d-flex flex-column mb-5 w-50 d-none'>
+                        <label htmlFor='title' className='mb-3'>Collection Image</label>
                         <input type='file' ref={inputRef} onChange={(e) => onChange(e)} />
                     </div>
                     <button className='btn btn-dark w-50 d-block' type='submit'>Update</button>

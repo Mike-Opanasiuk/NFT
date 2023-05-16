@@ -41,7 +41,7 @@ export const App = () => {
                     <Route path="/account" element={<AccountInfo/>}></Route>
                     <Route path="/add-collection" element={<AddCollection/>}></Route>
                     <Route path="/update-collection/:id" element={<UpdateCollection/>}></Route>
-                    <Route path="/collections/:name" element={<CollectionPage/>}></Route>
+                    <Route path="/collection/:id" element={<CollectionPage/>}></Route>
                     <Route path="*" element={<NotFound/>}></Route>
                 </Route>
             </Routes>
