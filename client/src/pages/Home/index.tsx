@@ -109,8 +109,8 @@ const Home = () => {
                     // console.log(res.data['totalPages'], 'collections111');
                 });
             } catch (e: any) {
-                // console.error(e);
-                throw new Error(e);
+                console.error(e);
+                // throw new Error(e);
             }
         } else if (sort !== '') {
             setStatus('Loading...');
@@ -226,7 +226,7 @@ const Home = () => {
                         aria-haspopup='true'
                         aria-expanded='false'
                     >
-                        Filter
+                        Sort
                     </a>
                     <div className='dropdown-menu'>
                         {/* <div className='dropdown-divider'></div> */}

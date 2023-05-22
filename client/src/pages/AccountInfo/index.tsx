@@ -7,7 +7,6 @@ import { BASE_API_URL } from "../../react-app-env.d";
 export const AccountInfo = () => {
     const user = useAppSelector(state => state.accountSlice.user);
 
-
     useEffect(() => {
 
         if (!user) {

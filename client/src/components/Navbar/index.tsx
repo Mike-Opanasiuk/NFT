@@ -5,8 +5,12 @@ import { tokenUtility } from '../../utils/tokenUtility';
 import { useEffect, useReducer, useState } from 'react';
 
 export const Navbar = () => {
-    const user = useAppSelector(state => state.accountSlice.user);
-
+    const user = useAppSelector((state) => state.accountSlice.user);
+    const isAuthenticated = Boolean(user);
+    // if (isAuthenticated) {
+    //     dispatch(loginAction(isAuthenticated))
+    //     nav('/');
+    // }
     // console.log(isAuth);
     
     const dispatch = useAppDispatch();

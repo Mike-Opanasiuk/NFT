@@ -21,9 +21,14 @@ import { useEffect } from 'react';
 export const App = () => {
     useEffect(() => {
         // 👇️ scroll to top on page load
-        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-      }, []);
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, []);
+    //   const user = useAppSelector((state) => state.accountSlice.user);
+    //   const isAuth = Boolean(user);
+    // const user = useAppSelector((state) => state.accountSlice.user); // TODOAUTH
+    // const isAuth = Boolean(user);
     const isAuth = Boolean(tokenUtility.getToken()) ;
+
     // console.log(isAuth);
     const dispatch = useDispatch();
     dispatch(loginAction(isAuth));
@@ -32,17 +37,17 @@ export const App = () => {
     return (
         <>
             <Routes>
-                <Route path="/" element={<Layout/>}>
-                    <Route index element={<Home/>}></Route>
-                    <Route path="/login" element={<Login/>}></Route>
-                    <Route path="/register" element={<Register/>}></Route>
-                    <Route path="/about" element={<About/>}></Route>
-                    <Route path="/collection/create" element={<CreateCollection/>}></Route>
-                    <Route path="/account" element={<AccountInfo/>}></Route>
-                    <Route path="/add-collection" element={<AddCollection/>}></Route>
-                    <Route path="/update-collection/:id" element={<UpdateCollection/>}></Route>
-                    <Route path="/collection/:id" element={<CollectionPage/>}></Route>
-                    <Route path="*" element={<NotFound/>}></Route>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />}></Route>
+                    <Route path="/login" element={<Login />}></Route>
+                    <Route path="/register" element={<Register />}></Route>
+                    <Route path="/about" element={<About />}></Route>
+                    <Route path="/collection/create" element={<CreateCollection />}></Route>
+                    <Route path="/account" element={<AccountInfo />}></Route>
+                    <Route path="/add-collection" element={<AddCollection />}></Route>
+                    <Route path="/update-collection/:id" element={<UpdateCollection />}></Route>
+                    <Route path="/collection/:id" element={<CollectionPage />}></Route>
+                    <Route path="*" element={<NotFound />}></Route>
                 </Route>
             </Routes>
         </>

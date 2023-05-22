@@ -2,6 +2,8 @@ import React, { FormEvent, useRef, useState } from 'react';
 import './AddCollection.scss';
 import axios from 'axios';
 import { BASE_API_URL } from '../../react-app-env.d';
+import { useNavigate } from 'react-router-dom';
+import { Alert } from 'components/Alert';
 
 interface FormData {
     name: string;
@@ -42,6 +44,8 @@ const AddCollection = () => {
         let file = e.target.files[0];
         // console.log(file);
         if (file) {
+            var imagePath = URL.createObjectURL(e.target.files[0]);
+            setCollectionImage(imagePath);
             changeHandler('imageName')(file.name);
             const reader = new FileReader();
             reader.onload = _handleReaderLoaded;
@@ -51,6 +55,11 @@ const AddCollection = () => {
     const authToken = localStorage.getItem('access_token');
 
 
+    const navigate = useNavigate();
+    let [showAlert, setShowAlert] = useState<boolean>();
+    let [alertMessage, setAlertMessage] = useState<string>("");
+
+    let [collectionImage, setCollectionImage] = useState<string>("");
 
     const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -75,23 +84,37 @@ const AddCollection = () => {
                     Authorization: `Bearer ${authToken}`
                 }
             }).then((res) => {
-                // console.log(res);
+                navigate("/");
+                //  console.log(res);
             });
         } catch (e: any) {
             console.error(e);
-            throw new Error(e);
+            if (e.response.status == 400) {
+                setAlertMessage(e.response.data.Message)
+                setShowAlert(true);
+            }
+            else {
+                navigate("/");
+            }
+            
+            // throw new Error(e);
         }
     };
 
     return (
         <div className='d-flex justify-content-center'>
+            {showAlert === true ? (
+                    <Alert message={alertMessage}></Alert>
+            ) : (
+                <span></span>
+            )}
             <div className='wrap-img'>
                 {!form.image ?
                     <span onClick={() => addHandler()}>
-                        Add Image
+                        <i className="fas fa-image fa-10x"></i>
                     </span>
                     : <img className='form-img'
-                        //src={URL.createObjectURL(form.image)}
+                        src={collectionImage}
                            alt='form image' />}
             </div>
             <div className='w-75 d-flex justify-content-center'>
