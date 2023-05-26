@@ -3,21 +3,54 @@ import { loginAction, logoutAction } from '../../store/reducers/account';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { tokenUtility } from '../../utils/tokenUtility';
 import { useEffect, useReducer, useState } from 'react';
+import { IUser } from 'react-app-env';
+import { makeClient } from 'api/client';
 
 export const Navbar = () => {
-    const user = useAppSelector((state) => state.accountSlice.user);
-    const isAuthenticated = Boolean(user);
+    let user = useAppSelector((state) => state.accountSlice.user);
+
+    let [isAuth, setIsAuth] = useState<boolean>();
+    useEffect(() => {
+        setIsAuth(Boolean(user));
+    }, [user])
+
+    useEffect(() => {
+
+        let token = tokenUtility.getToken()
+
+        if (!user && token) {
+            const client = makeClient("account");
+            client.get("profile").then((res) => {
+                user = res.data;
+                setIsAuth(true);
+            });
+        }
+    }, []);
+
+    // user = useAppSelector((state) => state.accountSlice.user);
+
+
+
+
+    // useEffect(() => {
+    //     setIsAuth(Boolean(tokenUtility.getToken()));
+    // }, []);
+
+
+
+    // const isAuth = Boolean(tokenUtility.getToken()) ;
     // if (isAuthenticated) {
     //     dispatch(loginAction(isAuthenticated))
     //     nav('/');
     // }
     // console.log(isAuth);
-    
     const dispatch = useAppDispatch();
+
     const onLogout = () => {
         dispatch(logoutAction());
         dispatch(loginAction(false))
         tokenUtility.clearToken();
+        setIsAuth(false);
     };
     return (
         <nav className='navbar navbar-expand-lg neon-blue mb-5'>
@@ -29,20 +62,30 @@ export const Navbar = () => {
                 <div className='collapse navbar-collapse' id='navbarColor01'>
                     <ul className='navbar-nav me-auto'>
                         <li className='nav-item'>
+                            <Link to='/collections' className='nav-link'>
+                                Collections
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
+                            <Link to='/tokens' className='nav-link'>
+                                Tokens
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
                             <Link to='/about' className='nav-link'>
                                 About
                             </Link>
                         </li>
                     </ul>
                 </div>
-                {user ? (
+                {isAuth ? (
                     <div>
                         <Link to='/add-collection' className='me-2'>
                             <button className='btn btn-secondary align-self-end'>
                                 + Create collection
                             </button>
                         </Link>
-                        
+
                         <button className='btn btn-secondary align-self-end' onClick={onLogout}>
                             Logout
                         </button>

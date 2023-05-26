@@ -41,11 +41,11 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                 // res.status === 200 ? alert('deleted') : alert('error' + res.status + res.statusText);
                 update();
             }).catch((err) => {
-                if(err.response.status == 401) {
+                if (err.response.status == 401) {
                     setErrMsg("Please, login first");
                     setShowAlert(true);
                 }
-                else if(err.response.status == 400) {
+                else if (err.response.status == 400) {
                     setShowAlert(true);
                     setErrMsg(err.response.data.Message);
                 }
@@ -58,7 +58,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
             });
         } catch (e: any) {
             console.error(e);
-            throw new Error(e);
+            // throw new Error(e);
         }
     };
 
@@ -69,7 +69,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
         dispatch(updateAction(id));
         navigate(`/update-collection/${id}`);
     }
-    if(showAlert) {
+    if (showAlert) {
         setTimeout(() => {
             setShowAlert(false);
         }, 5000);
@@ -77,7 +77,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
     return (
         <div className='col-md-4'>
             {showAlert === true ? (
-                    <Alert message={errMsg}></Alert>
+                <Alert message={errMsg}></Alert>
             ) : (
                 <span></span>
             )}
@@ -98,10 +98,15 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                     </div>
                     <div className='d-flex justify-content-between'>
                         {/* <span onClick={viewCollection} className='btn d-block btn-primary'>View collection</span> */}
-                        <span onClick={setUpdate} className='btn d-block btn-primary'>Update</span>
-                        <span onClick={delItem} className='btn d-block btn-danger bg-danger'>
-                            <i className="bi bi-trash3 text-white"></i>
-                        </span>
+                        {authToken ?
+                            <span onClick={setUpdate} className='btn d-block btn-primary'>Update</span> : <></>
+                        }
+                        {authToken ?
+                            <span onClick={delItem} className='btn d-block btn-danger bg-danger'>
+                                <i className="bi bi-trash3 text-white"></i>
+                            </span>
+                            : <></>
+                        }
                     </div>
                 </div>
             </div>

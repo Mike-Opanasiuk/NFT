@@ -30,7 +30,7 @@ const CollectionPage = () => {
             <div className='container mt-5'>
                 <div className='row'>
                     <div className='col-md-6'>
-                        <img
+                        <img className='w-75'
                             src={data?.image == null ?
                                 '../ImageNotFound.png'
                                  : `${BASE_URL}/${data?.image}`}

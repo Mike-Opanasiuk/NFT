@@ -1,10 +1,9 @@
 import Card from '../../components/Card';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import './Home.scss';
+import './CollectionsPage.scss';
 import debounce from 'lodash.debounce';
 import { BASE_API_URL } from '../../react-app-env.d';
-import { CustomCarousel } from 'components/Carousel';
 
 type AUTHOR = {
     id: string;
@@ -40,7 +39,7 @@ type Sort = 'asc' | 'desc' | '';
 type Sorting = 'name' | 'date';
 
 
-const Home = () => {
+const CollectionsPage = () => {
     const [count, setCount] = useState<number>(0);
     const [pagesCount, setPagesCount] = useState<number>(1);
     const [page, setPage] = useState<number>(1);
@@ -92,6 +91,7 @@ const Home = () => {
             // console.log(url + pages + `&SearchString=${category}`);
             try {
                 let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
+                console.log(requestUrl);
                 axios.get(requestUrl).then((res) => {
                 // console.log("Before get" + requestUrl);
 
@@ -117,7 +117,8 @@ const Home = () => {
             setStatus('Loading...');
             try {
                 axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
-                    // console.log(res.data.collections);
+                // console.log(url + pages + `&OrderBy=${sorting}&Order=${sort}`);
+                // console.log(res.data.collections);
                     if (!res.data.collections.length) {
                         // console.log("Total pages not worked");
                         setData([]);
@@ -140,6 +141,7 @@ const Home = () => {
         } else {
             try {
                 axios.get(url + pages).then((res) => {
+                    console.log(url + pages);
                     // console.log("================3=================");
                     setData(res.data.collections);
                         setPagesCount(res.data['totalPages']);
@@ -207,10 +209,45 @@ const Home = () => {
     //     inputRef.current!.value = category ?? '';
     // }
     return (
-        <CustomCarousel></CustomCarousel>
-    );
-    return (
         <div className='row'>
+            <div className='d-flex align-self-start col-10'>
+                <input
+                    ref={inputRef}
+                    className='form-control border border-dark'
+                    type='text'
+                    onChange={() => debouncedSearch()}
+                    placeholder='Search'
+                />
+            </div>
+            <div className='col-2 h-100'>
+                <li className='nav-item dropdown list-unstyled'>
+                    <a
+                        className='nav-link dropdown-toggle mt-2 pt-1'
+                        data-bs-toggle='dropdown'
+                        href='Home#'
+                        role='button'
+                        aria-haspopup='true'
+                        aria-expanded='false'
+                    >
+                        Sort
+                    </a>
+                    <div className='dropdown-menu'>
+                        {/* <div className='dropdown-divider'></div> */}
+                        <span className='dropdown-item' onClick={() => sortDescByDate()}>
+                            Newest first
+                        </span>
+                        <span className='dropdown-item' onClick={() => sortAscByDate()}>
+                            Oldest first
+                        </span>
+                        <span className='dropdown-item' onClick={() => sortAscByName()}>
+                            Sort ascending by name
+                        </span>
+                        <span className='dropdown-item' onClick={() => sortDescByName()}>
+                            Sort descending by name
+                        </span>
+                    </div>
+                </li>
+            </div>
             <div className='row row-cols-1 row-cols-md-3 g-4'>
                 {
                     !state(data).length ? <h1>{status}</h1> : state(data).map(elem => (
@@ -252,4 +289,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default CollectionsPage;

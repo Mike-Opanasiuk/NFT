@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import axios from 'axios';
-import { useEffect } from 'react';
-import { BASE_API_URL } from "../../react-app-env.d";
+import { useEffect, useState } from 'react';
+import { BASE_API_URL, IUser } from "../../react-app-env.d";
+import { tokenUtility } from "utils/tokenUtility";
 
 export const AccountInfo = () => {
-    const user = useAppSelector(state => state.accountSlice.user);
+    var token = tokenUtility.getToken();
+    let [user, setUser] = useState<IUser>();
 
     useEffect(() => {
-
-        if (!user) {
-            return;
-        }
         try {
+            if (!token) {
+                return;
+            }
             axios.get(`${BASE_API_URL}/Account/profile`, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,15 +21,17 @@ export const AccountInfo = () => {
                 }
             }).then((res) => {
                 // console.log(res.data);
+                setUser(res.data);
+                // console.log(res.data);
             })
         }
         catch (e: any) {
-            // console.log(e);
-            throw new Error(e);
+            console.log(e);
+            // throw new Error(e);
         }
     }, []);
 
-    if(!user)
+    if(!token)
     {
         return (
             <Link to="/login" className="text-center">
@@ -47,7 +50,7 @@ export const AccountInfo = () => {
                             width="150px"
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                         />
-                        <span className="font-weight-bold">{user.userName}</span>
+                        <span className="font-weight-bold">{user?.userName}</span>
                         <span className="text-black-50">bob@nft.com.ua</span>
                         <span> </span>
                     </div>

@@ -16,6 +16,8 @@ import { tokenUtility } from './utils/tokenUtility';
 import { useDispatch } from 'react-redux';
 import { loginAction } from './store/reducers/account';
 import { useEffect } from 'react';
+import TokensPage from 'pages/TokensPage';
+import CollectionsPage from 'pages/CollectionsPage';
 // Bob_12345
 
 export const App = () => {
@@ -42,6 +44,8 @@ export const App = () => {
                     <Route path="/login" element={<Login />}></Route>
                     <Route path="/register" element={<Register />}></Route>
                     <Route path="/about" element={<About />}></Route>
+                    <Route path="/tokens" element={<TokensPage />}></Route>
+                    <Route path="/collections" element={<CollectionsPage />}></Route>
                     <Route path="/collection/create" element={<CreateCollection />}></Route>
                     <Route path="/account" element={<AccountInfo />}></Route>
                     <Route path="/add-collection" element={<AddCollection />}></Route>
