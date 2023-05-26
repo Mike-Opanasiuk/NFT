@@ -4,7 +4,8 @@ import axios from 'axios';
 import './Home.scss';
 import debounce from 'lodash.debounce';
 import { BASE_API_URL } from '../../react-app-env.d';
-import { CustomCarousel } from 'components/Carousel';
+import { CustomCarousel } from 'components/CustomCarousel';
+import { makeClient } from 'api/client';
 
 type AUTHOR = {
     id: string;
@@ -154,6 +155,19 @@ const Home = () => {
         }
     }, [page, category, sort, count]);
 
+    const [mostPopularCollections, setMostPopularCollections] = useState<ICollection[]>([]);
+    
+    useEffect(() => {
+        try {
+            const countOfCollections = 3;
+            const client = makeClient("collections");
+            client.get(`most-popular/${countOfCollections}`).then((res) => {
+                setMostPopularCollections(res.data);
+            });
+        } catch(e: any) {
+           console.log(e);
+        }
+    }, [])
 
     const compose = <T, R, S>(
         f: Func<R, S>,
@@ -207,10 +221,8 @@ const Home = () => {
     //     inputRef.current!.value = category ?? '';
     // }
     return (
-        <CustomCarousel></CustomCarousel>
-    );
-    return (
         <div className='row'>
+             <CustomCarousel data={mostPopularCollections}></CustomCarousel>
             <div className='row row-cols-1 row-cols-md-3 g-4'>
                 {
                     !state(data).length ? <h1>{status}</h1> : state(data).map(elem => (

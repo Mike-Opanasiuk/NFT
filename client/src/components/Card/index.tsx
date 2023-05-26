@@ -113,7 +113,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                         <h5 className='btn btn-link p-0' onClick={viewCollection}>{title}</h5>
                     </div>
                     <div className='d-flex align-items-center justify-content-between'>
-                        <p className='card-text'>{author}</p>
+                        <p className='card-text'>Owner {author}</p>
                         {
                             !!price ? <p className='card-text text-success'>{price}$</p> :
                                 <p className='card-text text-white'>{' '}</p>

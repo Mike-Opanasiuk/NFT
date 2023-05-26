@@ -205,7 +205,7 @@ const TokensPage = () => {
     //     inputRef.current!.value = category ?? '';
     // }
     return (
-        <div className='row'>
+        <div className='row mt-5'>
             <div className='d-flex align-self-start col-10'>
                 <input
                     ref={inputRef}

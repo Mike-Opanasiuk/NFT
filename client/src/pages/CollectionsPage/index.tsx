@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import './CollectionsPage.scss';
 import debounce from 'lodash.debounce';
-import { BASE_API_URL } from '../../react-app-env.d';
+import { BASE_API_URL, ICollection } from '../../react-app-env.d';
 
 type AUTHOR = {
     id: string;
@@ -24,15 +24,6 @@ export interface Token {
 }
 
 type Func<T, R> = (arg: T) => R;
-
-
-export interface ICollection {
-    id: string;
-    name: string;
-    image: string;
-    author: AUTHOR;
-    tokens: Token[];
-}
 
 type Status = 'Loading...' | 'Not Found' | 'Success';
 type Sort = 'asc' | 'desc' | '';
@@ -209,7 +200,7 @@ const CollectionsPage = () => {
     //     inputRef.current!.value = category ?? '';
     // }
     return (
-        <div className='row'>
+        <div className='row mt-5'>
             <div className='d-flex align-self-start col-10'>
                 <input
                     ref={inputRef}

@@ -52,7 +52,7 @@ export const Navbar = () => {
         setIsAuth(false);
     };
     return (
-        <nav className='navbar navbar-expand-lg neon-blue mb-5'>
+        <nav className='navbar navbar-expand-lg neon-blue'>
             <div className='container-fluid'>
                 <Link className='navbar-brand' to='/'>
                     NFT
