@@ -33,13 +33,10 @@ public class GetCollectionByIdHandler : IRequestHandler<GetCollectionByIdQuery, 
             .Get()
             .Include(c => c.Author)
             .Include(c => c.Tokens)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
-        if(collection == null)
-        {
-            throw new BadRequestRestException($"Collection does not exist.");
-        }
-
-        return mapper.Map<CollectionDto>(collection);
+        return collection == null ? 
+            throw new BadRequestRestException($"Collection does not exist.") : 
+            mapper.Map<CollectionDto>(collection);
     }
 }

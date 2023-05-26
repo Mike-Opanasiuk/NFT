@@ -28,6 +28,13 @@ public class CollectionsController : BaseController
         return await mediator.Send(request);
     }
 
+    [HttpGet("most-popular/{count}")]
+    public async Task<ActionResult<IEnumerable<CollectionDto>>> GetMostPopularCollections([FromRoute] int count)
+    {
+        Console.WriteLine(count.ToString());
+        return Ok(await mediator.Send(new GetMostPopularCollectionsQuery(count)));
+    }
+
     [HttpGet("{collectionId}")]
     public async Task<ActionResult<CollectionDto>> GetCollectionsAsync([FromRoute] Guid collectionId)
     {
