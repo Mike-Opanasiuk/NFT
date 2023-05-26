@@ -149,7 +149,7 @@ const UpdateCollection = () => {
     }
 
     return (
-        <div>
+        <div className='mt-5'>
             {showAlert === true ? (
                 <Alert message={alertMessage}></Alert>
             ) : (

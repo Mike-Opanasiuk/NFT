@@ -79,7 +79,7 @@ export const Navbar = () => {
                 </div>
                 {isAuth ? (
                     <div>
-                        <Link to='/add-collection' className='me-2'>
+                        <Link to='/collection/create' className='me-2'>
                             <button className='btn btn-secondary align-self-end'>
                                 + Create collection
                             </button>

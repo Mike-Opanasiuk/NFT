@@ -1,23 +1,20 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {  Route, Routes } from 'react-router-dom';
 import { About } from './pages/About';
 import { AccountInfo } from './pages/AccountInfo';
-import { CreateCollection } from './pages/CreateCollection';
 import Home from './pages/Home';
 import { Layout } from './components/Layout';
 import { Login } from './pages/Login';
 import { NotFound } from './pages/NotFound';
 import { Register } from './pages/Register';
 import CollectionPage from './pages/CollectionPage';
-import { useAppSelector } from './store/hooks';
-import Collections from './store/reducers/collections';
-import AddCollection from './pages/AddCollection';
-import UpdateCollection from './pages/update/UpdateCollection';
+import UpdateCollection from './pages/UpdateCollection/UpdateCollection';
 import { tokenUtility } from './utils/tokenUtility';
 import { useDispatch } from 'react-redux';
 import { loginAction } from './store/reducers/account';
 import { useEffect } from 'react';
 import TokensPage from 'pages/TokensPage';
 import CollectionsPage from 'pages/CollectionsPage';
+import CreateCollection from 'pages/CreateCollection';
 // Bob_12345
 
 export const App = () => {
@@ -48,7 +45,6 @@ export const App = () => {
                     <Route path="/collections" element={<CollectionsPage />}></Route>
                     <Route path="/collection/create" element={<CreateCollection />}></Route>
                     <Route path="/account" element={<AccountInfo />}></Route>
-                    <Route path="/add-collection" element={<AddCollection />}></Route>
                     <Route path="/update-collection/:id" element={<UpdateCollection />}></Route>
                     <Route path="/collection/:id" element={<CollectionPage />}></Route>
                     <Route path="*" element={<NotFound />}></Route>

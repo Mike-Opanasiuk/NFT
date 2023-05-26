@@ -9,6 +9,11 @@ public class FileStorageService : IFileStorageService
     #region Public
     public void DeleteFile(string path)
     {
+        if(string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
         if (IsFileExist(path))
         {
             File.Delete(path);

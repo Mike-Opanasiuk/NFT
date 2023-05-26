@@ -4,35 +4,39 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BASE_API_URL, IUser } from "../../react-app-env.d";
 import { tokenUtility } from "utils/tokenUtility";
+import { makeClient } from "api/client";
+import { ICollection } from "pages/Home";
 
 export const AccountInfo = () => {
     var token = tokenUtility.getToken();
     let [user, setUser] = useState<IUser>();
+    let [collections, setCollections] = useState<ICollection[]>([]);
 
     useEffect(() => {
         try {
-            if (!token) {
-                return;
-            }
-            axios.get(`${BASE_API_URL}/Account/profile`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "authorization": "Bearer " + localStorage.getItem('access_token'),
+            const client = makeClient("account");
+            client.get("profile").then((res) => {
+                user = res.data;
+                setUser(user)
+                try {
+
+                    const client = makeClient("account");
+                    client.get(`${user?.id}/collections`).then((res) => {
+                        setCollections(res.data);
+                    });
                 }
-            }).then((res) => {
-                // console.log(res.data);
-                setUser(res.data);
-                // console.log(res.data);
-            })
+                catch (e: any) {
+                    console.log(e);
+                }
+            });
         }
         catch (e: any) {
             console.log(e);
-            // throw new Error(e);
         }
+
     }, []);
 
-    if(!token)
-    {
+    if (!user) {
         return (
             <Link to="/login" className="text-center">
                 <h1>Login first . . .</h1>
@@ -108,12 +112,12 @@ export const AccountInfo = () => {
                         </div>
                         <div className="mt-5 text-center">
                             <Link to="/">
-                            <button
-                                className="btn btn-primary profile-button"
-                                type="button"
-                            >
-                                Save Profile
-                            </button>
+                                <button
+                                    className="btn btn-primary profile-button"
+                                    type="button"
+                                >
+                                    Save Profile
+                                </button>
                             </Link>
                         </div>
                     </div>
@@ -123,31 +127,23 @@ export const AccountInfo = () => {
                         <div className="d-flex justify-content-between align-items-center experience mb-2">
                             <span>Collections</span>
                             <Link to="/collection/create">
-                            <button className="border px-3 p-1 add-experience bg-dark text-white">
-                                <i className="fa fa-plus"></i> Add collection
-                            </button>
+                                <button className="border px-3 p-1 add-experience bg-dark text-white">
+                                    <i className="fa fa-plus"></i> Add collection
+                                </button>
                             </Link>
                         </div>
                         <div className="col-md-12">
                             <ul className="list-group">
-                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Collection [1]
-                                    <span className="badge badge-pill bg-warning">
-                                        14
-                                    </span>
-                                </li>
-                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                    Collection [2]
-                                    <span className="badge badge-pill bg-warning">
-                                        2
-                                    </span>
-                                </li>
-                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                Collection [3]
-                                    <span className="badge badge-pill bg-warning">
-                                        1
-                                    </span>
-                                </li>
+                                {
+                                    collections.map(collection => (
+                                        <li className="list-group-item d-flex justify-content-between align-items-center">
+                                            {collection.name}
+                                            <span className="badge badge-pill bg-warning">
+                                                {collection.tokens.length}
+                                            </span>
+                                        </li>
+                                    ))
+                                }
                             </ul>
                         </div>
                     </div>
