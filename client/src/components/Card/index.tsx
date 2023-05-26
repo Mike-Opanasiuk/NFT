@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { updateAction } from '../../store/reducers/collections';
@@ -7,6 +7,9 @@ import { updateAction } from '../../store/reducers/collections';
 import "./Card.scss"
 import { Alert } from 'components/Alert';
 import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
+import { useAppSelector } from 'store/hooks';
+import { tokenUtility } from 'utils/tokenUtility';
+import { makeClient } from 'api/client';
 
 const Card = ({ title, author, update, image, price, id, onClick }: {
     update: () => void
@@ -29,6 +32,26 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
         navigate(`/collection/${id}`);
     };
     const authToken = localStorage.getItem('access_token');
+
+    let user = useAppSelector((state) => state.accountSlice.user);
+
+    let [isAuth, setIsAuth] = useState<boolean>();
+    useEffect(() => {
+        setIsAuth(Boolean(user));
+    }, [user])
+
+    useEffect(() => {
+        let token = tokenUtility.getToken()
+
+        if (!user && token) {
+            const client = makeClient("account");
+            client.get("profile").then((res) => {
+                user = res.data;
+                setIsAuth(true);
+            });
+        }
+    }, []);
+
     let [errMsg, setErrMsg] = useState<string>("");
     const delItem = () => {
         try {
@@ -98,12 +121,12 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                     </div>
                     <div className='d-flex justify-content-between'>
                         {/* <span onClick={viewCollection} className='btn d-block btn-primary'>View collection</span> */}
-                        {authToken ?
-                            <span onClick={setUpdate} className='btn d-block btn-primary'>Update</span> : <></>
+                        {isAuth ?
+                            <span onClick={setUpdate} className='btn d-block btn-transparent border border-primary'>Update</span> : <></>
                         }
-                        {authToken ?
-                            <span onClick={delItem} className='btn d-block btn-danger bg-danger'>
-                                <i className="bi bi-trash3 text-white"></i>
+                        {isAuth ?
+                            <span onClick={delItem} className='btn d-block btn-transparent bg-transparent border border-primary'>
+                                <i className="bi bi-trash3 text-danger"></i>
                             </span>
                             : <></>
                         }

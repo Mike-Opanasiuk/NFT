@@ -15,7 +15,6 @@ export const Navbar = () => {
     }, [user])
 
     useEffect(() => {
-
         let token = tokenUtility.getToken()
 
         if (!user && token) {

@@ -51,7 +51,7 @@ export const AccountInfo = () => {
                             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                         />
                         <span className="font-weight-bold">{user?.userName}</span>
-                        <span className="text-black-50">bob@nft.com.ua</span>
+                        <span className="text-black-50">{user?.userName}@nft.com.ua</span>
                         <span> </span>
                     </div>
                 </div>
@@ -124,7 +124,7 @@ export const AccountInfo = () => {
                             <span>Collections</span>
                             <Link to="/collection/create">
                             <button className="border px-3 p-1 add-experience bg-dark text-white">
-                                <i className="fa fa-plus"></i>&nbsp;Add collection
+                                <i className="fa fa-plus"></i> Add collection
                             </button>
                             </Link>
                         </div>
