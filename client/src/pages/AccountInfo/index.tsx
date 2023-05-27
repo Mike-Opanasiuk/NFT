@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BASE_API_URL, IUser } from "../../react-app-env.d";
+import { BASE_API_URL, ICollection, IUser } from "../../react-app-env.d";
 import { tokenUtility } from "utils/tokenUtility";
 import { makeClient } from "api/client";
-import { ICollection } from "pages/Home";
 
 export const AccountInfo = () => {
     var token = tokenUtility.getToken();

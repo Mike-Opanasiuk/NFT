@@ -3,38 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import './Home.scss';
 import debounce from 'lodash.debounce';
-import { BASE_API_URL } from '../../react-app-env.d';
+import { BASE_API_URL, ICollection } from '../../react-app-env.d';
 import { CustomCarousel } from 'components/CustomCarousel';
 import { makeClient } from 'api/client';
 
-type AUTHOR = {
-    id: string;
-    userName: string;
-    image: null;
-}
-
 let defaultPerPage = 9;
 
-export interface Token {
-    id: string;
-    name: string;
-    image: string;
-    description: string;
-    price: number;
-    collection: string;
-    author: AUTHOR;
-}
-
 type Func<T, R> = (arg: T) => R;
-
-
-export interface ICollection {
-    id: string;
-    name: string;
-    image: string;
-    author: AUTHOR;
-    tokens: Token[];
-}
 
 type Status = 'Loading...' | 'Not Found' | 'Success';
 type Sort = 'asc' | 'desc' | '';

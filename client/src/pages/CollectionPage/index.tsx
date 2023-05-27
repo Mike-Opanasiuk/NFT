@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { ICollection } from '../Home';
-import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
+import { BASE_API_URL, BASE_URL, ICollection } from '../../react-app-env.d';
 
 const CollectionPage = () => {
     useEffect(() => {

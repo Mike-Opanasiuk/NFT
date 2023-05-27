@@ -5,13 +5,30 @@ export interface IUser {
     password: string;
 }
 
+export interface Author {
+    id: string;
+    userName: string;
+    image: string;
+}
+
 export interface ICollection {
     id: string;
     name: string;
     image: string;
-    author: AUTHOR;
-    tokens: Token[];
+    author: Author;
+    tokens: IToken[];
 }
+
+export interface IToken {
+    id: string;
+    name: string;
+    image: string;
+    description: string;
+    price: number;
+    collection: string;
+    author: Author;
+}
+
 
 export const BASE_URL = 'https://localhost:5000';
 export const BASE_API_URL = `${BASE_URL}/api`;

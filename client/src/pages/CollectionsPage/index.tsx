@@ -5,23 +5,7 @@ import './CollectionsPage.scss';
 import debounce from 'lodash.debounce';
 import { BASE_API_URL, ICollection } from '../../react-app-env.d';
 
-type AUTHOR = {
-    id: string;
-    userName: string;
-    image: null;
-}
-
 let defaultPerPage = 9;
-
-export interface Token {
-    id: string;
-    name: string;
-    image: string;
-    description: string;
-    price: number;
-    collection: string;
-    author: AUTHOR;
-}
 
 type Func<T, R> = (arg: T) => R;
 
@@ -247,7 +231,7 @@ const CollectionsPage = () => {
                             update={() => setCount(prevState => ++prevState)}
                             name={elem.name}
                             id={elem.id}
-                            price={elem.tokens[0]?.price}
+                            price={-1}
                             author={elem.author.userName}
                             title={elem.name}
                             key={elem.id}

@@ -2,36 +2,11 @@ import Card from '../../components/Card';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-import { BASE_API_URL } from '../../react-app-env.d';
-
-type AUTHOR = {
-    id: string;
-    userName: string;
-    image: null;
-}
+import { BASE_API_URL, IToken } from '../../react-app-env.d';
 
 let defaultPerPage = 9;
 
-export interface Token {
-    id: string;
-    name: string;
-    image: string;
-    description: string;
-    price: number;
-    collection: string;
-    author: AUTHOR;
-}
-
 type Func<T, R> = (arg: T) => R;
-
-
-export interface ICollection {
-    id: string;
-    name: string;
-    image: string;
-    author: AUTHOR;
-    tokens: Token[];
-}
 
 type Status = 'Loading...' | 'Not Found' | 'Success';
 type Sort = 'asc' | 'desc' | '';
@@ -47,7 +22,7 @@ const TokensPage = () => {
     const [sort, setSort] = useState<Sort>('asc');
     const [sorting, setSorting] = useState<Sorting>('name');
     const inputRef = useRef<HTMLInputElement>(null);
-    let url: string = `${BASE_API_URL}/Collections?`;
+    let url: string = `${BASE_API_URL}/tokens?`;
     let pages: string = `Page=${page}&PerPage=${defaultPerPage}`;
 
     const sortAscByName = () => {
@@ -83,7 +58,7 @@ const TokensPage = () => {
         }, 500)
     , []);
 
-    const [data, setData] = useState<ICollection[]>([]);
+    const [data, setData] = useState<IToken[]>([]);
     useEffect(() => {
         if (category !== '') {
             setStatus('Loading...');
@@ -94,13 +69,13 @@ const TokensPage = () => {
                 // console.log("Before get" + requestUrl);
 
                     // console.log(res.data.collections);
-                    if (!res.data.collections.length) {
+                    if (!res.data.tokens.length) {
                         setData([]);
                         setPagesCount(1);
                         setStatus('Not Found');
                     } else {
                         // console.log(res.data.collections, 'collections');
-                        setData(res.data.collections);
+                        setData(res.data.tokens);
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
                     }
@@ -116,7 +91,7 @@ const TokensPage = () => {
             try {
                 axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
                     // console.log(res.data.collections);
-                    if (!res.data.collections.length) {
+                    if (!res.data.tokens.length) {
                         // console.log("Total pages not worked");
                         setData([]);
                         setPagesCount(1);
@@ -124,7 +99,7 @@ const TokensPage = () => {
                     } else {
                         // console.log('==============2=================');
                         // console.log(res.data.collections, 'collections');
-                        setData(res.data.collections);
+                        setData(res.data.tokens);
                         // console.log("Total pages worked");
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
@@ -139,7 +114,7 @@ const TokensPage = () => {
             try {
                 axios.get(url + pages).then((res) => {
                     // console.log("================3=================");
-                    setData(res.data.collections);
+                    setData(res.data.tokens);
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
                     // console.log(res.data['totalPages'], 'collections111');
@@ -190,7 +165,7 @@ const TokensPage = () => {
     const statAndData = compose(filtered, statused);
     // console.log(statAndData(data), 'statAndData(data)');
 
-    const state = (arg: ICollection[]) => statAndData(arg);
+    const state = (arg: IToken[]) => statAndData(arg);
 
     const setSearch = () => {
         if (inputRef.current && page) {
@@ -252,7 +227,7 @@ const TokensPage = () => {
                             update={() => setCount(prevState => ++prevState)}
                             name={elem.name}
                             id={elem.id}
-                            price={elem.tokens[0]?.price}
+                            price={elem.price}
                             author={elem.author.userName}
                             title={elem.name}
                             key={elem.id}
