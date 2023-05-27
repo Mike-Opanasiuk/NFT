@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import TokensPage from 'pages/TokensPage';
 import CollectionsPage from 'pages/CollectionsPage';
 import CreateCollection from 'pages/CreateCollection';
+import CreateTokenPage from 'pages/CreateTokenPage';
 // Bob_12345
 
 export const App = () => {
@@ -42,6 +43,7 @@ export const App = () => {
                     <Route path="/register" element={<Register />}></Route>
                     <Route path="/about" element={<About />}></Route>
                     <Route path="/tokens" element={<TokensPage />}></Route>
+                    <Route path="/token/create" element={<CreateTokenPage />}></Route>
                     <Route path="/collections" element={<CollectionsPage />}></Route>
                     <Route path="/collection/create" element={<CreateCollection />}></Route>
                     <Route path="/account" element={<AccountInfo />}></Route>

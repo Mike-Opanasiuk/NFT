@@ -84,6 +84,11 @@ export const Navbar = () => {
                                 + Create collection
                             </button>
                         </Link>
+                        <Link to='/token/create' className='me-2'>
+                            <button className='btn btn-secondary align-self-end'>
+                                + Create token
+                            </button>
+                        </Link>
 
                         <button className='btn btn-secondary align-self-end' onClick={onLogout}>
                             Logout

@@ -9,10 +9,10 @@ export const CustomCarousel = ({ data }: {
         <Carousel variant="light" className="w-80 m-auto">
             {
                 data.map(item => (
-                    <Carousel.Item>
+                    <Carousel.Item key={item.id}>
                         <img
                             className="carousel-img"
-                            key={item.id}
+                            
                             src={item?.image == null ?
                                 '../ImageNotFound.png'
                                 : `${BASE_URL}/${item?.image}`
