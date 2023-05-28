@@ -1,4 +1,4 @@
-import Card from '../../components/Card';
+import TokenCard from '../../components/TokenCard';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
@@ -201,7 +201,7 @@ const TokensPage = () => {
             <div className='row row-cols-1 row-cols-md-3 g-4'>
                 {
                     !state(data).length ? <h1>{status}</h1> : state(data).map(elem => (
-                        <Card
+                        <TokenCard
                             image={elem.image}
                             update={() => setCount(prevState => ++prevState)}
                             name={elem.name}

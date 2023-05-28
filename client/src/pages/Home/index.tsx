@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../../components/Card';
+import CollectionCard from '../../components/CollectionCard';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { BASE_API_URL, ICollection } from '../../react-app-env.d';
@@ -148,12 +148,11 @@ const Home = () => {
             <div className='row row-cols-1 row-cols-md-3 g-4'>
                 {
                     !state(data).length ? <h1>{status}</h1> : state(data).map(elem => (
-                        <Card
+                        <CollectionCard
                             image={elem.image}
                             update={() => setCount(prevState => ++prevState)}
                             name={elem.name}
                             id={elem.id}
-                            price={elem.tokens[0]?.price}
                             author={elem.author.userName}
                             title={elem.name}
                             key={elem.id}

@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../store/hooks';
 import { updateAction } from '../../store/reducers/collections';
-import { Alert } from '../../components/Alert';
-import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
+import { Alert } from '../Alert';
 import { tokenUtility } from '../../utils/tokenUtility';
 import { makeClient } from '../../api/client';
+import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
 
 import React from 'react';
 import axios from 'axios';
 
-import "./Card.scss"
+import "./TokenCard.scss"
 
-const Card = ({ title, author, update, image, price, id, onClick }: {
+const TokenCard = ({ title, author, update, image, price, id, onClick }: {
     update: () => void
     title: string
     author: string
@@ -122,4 +122,4 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
 };
 
 
-export default Card;
+export default TokenCard;
