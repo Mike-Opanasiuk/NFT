@@ -1,8 +1,9 @@
+import React from 'react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert } from 'components/Alert';
-import { makeClient } from 'api/client';
-import { ICollection } from 'react-app-env';
+import { Alert } from '../../components/Alert';
+import { makeClient } from '../../api/client';
+import { ICollection } from '../../react-app-env.d';
 
 import './CreateTokenPage.scss';
 

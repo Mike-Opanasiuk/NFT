@@ -1,11 +1,13 @@
+import React from 'react';
 import Card from '../../components/Card';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import './Home.scss';
 import debounce from 'lodash.debounce';
 import { BASE_API_URL, ICollection } from '../../react-app-env.d';
-import { CustomCarousel } from 'components/CustomCarousel';
-import { makeClient } from 'api/client';
+import { CustomCarousel } from '../../components/CustomCarousel';
+import { makeClient } from '../../api/client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import './Home.scss';
 
 let defaultPerPage = 9;
 
@@ -24,108 +26,66 @@ const Home = () => {
     const [status, setStatus] = useState<Status>('Loading...');
     const [sort, setSort] = useState<Sort>('asc');
     const [sorting, setSorting] = useState<Sorting>('name');
+    const [data, setData] = useState<ICollection[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
     let url: string = `${BASE_API_URL}/Collections?`;
     let pages: string = `Page=${page}&PerPage=${defaultPerPage}`;
 
-    const sortAscByName = () => {
-        setSorting('name');
-        setSort('asc');
-    };
-
-    const sortAscByDate = () => {
-        setSorting('date');
-        setSort('asc');
-    };
-
-    const sortDescByDate = () => {
-        setSorting('date');
-        setSort('desc');
-    };
-
-    const sortDescByName = () => {
-        setSorting('name');
-        setSort('desc');
-    };
 
     const debouncedChangeHandler = useCallback(
         debounce(() => {
             window.scrollTo(0, 0)
         }, 300)
-
         , []);
 
-    const debouncedSearch = useCallback(
-        debounce(() => {
-            setSearch();
-        }, 500)
-    , []);
-
-    const [data, setData] = useState<ICollection[]>([]);
     useEffect(() => {
         if (category !== '') {
             setStatus('Loading...');
-            // console.log(url + pages + `&SearchString=${category}`);
             try {
                 let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
                 axios.get(requestUrl).then((res) => {
-                // console.log("Before get" + requestUrl);
 
-                    // console.log(res.data.collections);
                     if (!res.data.collections.length) {
                         setData([]);
                         setPagesCount(1);
                         setStatus('Not Found');
                     } else {
-                        // console.log(res.data.collections, 'collections');
                         setData(res.data.collections);
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
                     }
-                    // console.log('==============1=================');
-                    // console.log(res.data['totalPages'], 'collections111');
                 });
             } catch (e: any) {
                 console.error(e);
-                // throw new Error(e);
             }
         } else if (sort !== '') {
             setStatus('Loading...');
             try {
                 axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
-                    // console.log(res.data.collections);
                     if (!res.data.collections.length) {
-                        // console.log("Total pages not worked");
                         setData([]);
                         setPagesCount(1);
                         setStatus('Not Found');
                     } else {
-                        // console.log('==============2=================');
-                        // console.log(res.data.collections, 'collections');
                         setData(res.data.collections);
-                        // console.log("Total pages worked");
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
                     }
                 });
             } catch (e: any) {
                 console.error(e);
-                // throw new Error(e);
             }
 
         } else {
             try {
-                axios.get(url + pages).then((res) => {
-                    // console.log("================3=================");
+                axios.get(`${url}${pages}`).then((res) => {
                     setData(res.data.collections);
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
-                    // console.log(res.data['totalPages'], 'collections111');
                 });
 
             } catch (e: any) {
                 console.error(e);
-                // throw new Error(e);
             }
         }
     }, [page, category, sort, count]);
@@ -179,22 +139,9 @@ const Home = () => {
     };
 
     const statAndData = compose(filtered, statused);
-    // console.log(statAndData(data), 'statAndData(data)');
 
     const state = (arg: ICollection[]) => statAndData(arg);
 
-    const setSearch = () => {
-        if (inputRef.current && page) {
-            setCategory(inputRef.current.value);
-            setPage(1);
-        } else if(inputRef.current){
-            setCategory(inputRef.current.value);
-        }
-    };
-    
-    // if(inputRef.current) {
-    //     inputRef.current!.value = category ?? '';
-    // }
     return (
         <div className='row'>
              <CustomCarousel data={mostPopularCollections}></CustomCarousel>
@@ -221,10 +168,8 @@ const Home = () => {
                                 <button
                                     key={elem.toString()}
                                     onClick={() => {
-                                        // inputRef.current!.value = '';
                                         setPage(elem);
                                     }}
-                                    // disabled={!!category.length}
                                     className={page === elem ? 'pagination-btn active mr-3' : !!category.length ? 'pagination-btn' : 'pagination-btn mr-3'}>
                                     <span>
                                         {elem}

@@ -1,10 +1,10 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { loginAction, logoutAction } from '../../store/reducers/account';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { tokenUtility } from '../../utils/tokenUtility';
-import { useEffect, useReducer, useState } from 'react';
-import { IUser } from 'react-app-env';
-import { makeClient } from 'api/client';
+import { useEffect, useState } from 'react';
+import { makeClient } from '../../api/client';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export const Navbar = () => {
     let user = useAppSelector((state) => state.accountSlice.user);
@@ -25,24 +25,6 @@ export const Navbar = () => {
             });
         }
     }, []);
-
-    // user = useAppSelector((state) => state.accountSlice.user);
-
-
-
-
-    // useEffect(() => {
-    //     setIsAuth(Boolean(tokenUtility.getToken()));
-    // }, []);
-
-
-
-    // const isAuth = Boolean(tokenUtility.getToken()) ;
-    // if (isAuthenticated) {
-    //     dispatch(loginAction(isAuthenticated))
-    //     nav('/');
-    // }
-    // console.log(isAuth);
     const dispatch = useAppDispatch();
 
     const onLogout = () => {
@@ -112,26 +94,18 @@ export const Navbar = () => {
                     </div>
                 )}
 
-                {/* <li className="nav-item">
-        <Link to="/bla" className="nav-link">Home</Link>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Features</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Pricing</a>
-        </li> */}
+
 
                 {/* <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#">Action</a>
-            <a className="dropdown-item" href="#">Another action</a>
-            <a className="dropdown-item" href="#">Something else here</a>
-            <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Separated link</a>
-          </div>
-        </li> */}
+                    <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div className="dropdown-menu">
+                        <a className="dropdown-item" href="#">Action</a>
+                        <a className="dropdown-item" href="#">Another action</a>
+                        <a className="dropdown-item" href="#">Something else here</a>
+                        <div className="dropdown-divider"></div>
+                        <a className="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </li> */}
             </div>
         </nav>
     );

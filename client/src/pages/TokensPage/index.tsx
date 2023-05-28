@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { BASE_API_URL, IToken } from '../../react-app-env.d';
+import React from 'react';
 
 let defaultPerPage = 9;
 
@@ -62,67 +63,50 @@ const TokensPage = () => {
     useEffect(() => {
         if (category !== '') {
             setStatus('Loading...');
-            // console.log(url + pages + `&SearchString=${category}`);
             try {
                 let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
                 axios.get(requestUrl).then((res) => {
-                // console.log("Before get" + requestUrl);
-
-                    // console.log(res.data.collections);
                     if (!res.data.tokens.length) {
                         setData([]);
                         setPagesCount(1);
                         setStatus('Not Found');
                     } else {
-                        // console.log(res.data.collections, 'collections');
                         setData(res.data.tokens);
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
                     }
-                    // console.log('==============1=================');
-                    // console.log(res.data['totalPages'], 'collections111');
                 });
             } catch (e: any) {
                 console.error(e);
-                // throw new Error(e);
             }
         } else if (sort !== '') {
             setStatus('Loading...');
             try {
                 axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
-                    // console.log(res.data.collections);
                     if (!res.data.tokens.length) {
-                        // console.log("Total pages not worked");
                         setData([]);
                         setPagesCount(1);
                         setStatus('Not Found');
                     } else {
-                        // console.log('==============2=================');
-                        // console.log(res.data.collections, 'collections');
                         setData(res.data.tokens);
-                        // console.log("Total pages worked");
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
                     }
                 });
             } catch (e: any) {
                 console.error(e);
-                // throw new Error(e);
             }
 
         } else {
             try {
                 axios.get(url + pages).then((res) => {
-                    // console.log("================3=================");
                     setData(res.data.tokens);
                         setPagesCount(res.data['totalPages']);
                         setStatus('Success');
-                    // console.log(res.data['totalPages'], 'collections111');
                 });
 
             } catch (e: any) {
                 console.error(e);
-                // throw new Error(e);
             }
         }
     }, [page, category, sort, count]);
@@ -163,7 +147,6 @@ const TokensPage = () => {
     };
 
     const statAndData = compose(filtered, statused);
-    // console.log(statAndData(data), 'statAndData(data)');
 
     const state = (arg: IToken[]) => statAndData(arg);
 
@@ -176,9 +159,6 @@ const TokensPage = () => {
         }
     };
     
-    // if(inputRef.current) {
-    //     inputRef.current!.value = category ?? '';
-    // }
     return (
         <div className='row mt-5'>
             <div className='d-flex align-self-start col-10'>
@@ -203,7 +183,6 @@ const TokensPage = () => {
                         Sort
                     </a>
                     <div className='dropdown-menu'>
-                        {/* <div className='dropdown-divider'></div> */}
                         <span className='dropdown-item' onClick={() => sortDescByDate()}>
                             Newest first
                         </span>
@@ -242,10 +221,8 @@ const TokensPage = () => {
                                 <button
                                     key={elem.toString()}
                                     onClick={() => {
-                                        // inputRef.current!.value = '';
                                         setPage(elem);
                                     }}
-                                    // disabled={!!category.length}
                                     className={page === elem ? 'pagination-btn active mr-3' : !!category.length ? 'pagination-btn' : 'pagination-btn mr-3'}>
                                     <span>
                                         {elem}

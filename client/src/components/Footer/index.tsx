@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
@@ -89,12 +90,11 @@ export const Footer = () => {
                         <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
                             <p>
-                                <i className="fas fa-home me-3"></i> Rivne
-                                Soborna 16
+                                <i className="fas fa-home me-3"></i> Lviv
                             </p>
                             <p>
                                 <i className="fas fa-envelope me-3"></i>
-                                itstep@nft.com
+                                nft.com
                             </p>
                             <p>
                                 <i className="fas fa-phone me-3"></i> +380 67 333 11 11
@@ -108,9 +108,9 @@ export const Footer = () => {
             </section>
 
             <div className="text-center p-4">
-                © 2022 Copyright:
+                © 2023 Copyright:
                 <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
-                    NFT.ITStep.com
+                    NFT.com
                 </a>
             </div>
         </footer>

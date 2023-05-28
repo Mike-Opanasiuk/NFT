@@ -3,7 +3,7 @@ import './CreateCollection.scss';
 import axios from 'axios';
 import { BASE_API_URL } from '../../react-app-env.d';
 import { useNavigate } from 'react-router-dom';
-import { Alert } from 'components/Alert';
+import { Alert } from '../../components/Alert';
 
 interface FormData {
     name: string;

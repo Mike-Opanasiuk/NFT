@@ -1,3 +1,4 @@
+import React from 'react';
 import './index.scss';
 
 export const NotFound = () => {
@@ -10,7 +11,7 @@ export const NotFound = () => {
                 viewBox="0 50 200 82.7"
             >
                 <g id="Calque_1">
-                    <text 
+                    <text
                         id="XMLID_3_"
                         transform="matrix(1.2187 0 0 1 13 75.6393)"
                         className="st0 st1"

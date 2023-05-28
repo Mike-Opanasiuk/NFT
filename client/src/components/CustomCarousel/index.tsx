@@ -1,6 +1,8 @@
 import { Carousel } from "react-bootstrap";
-import './CustomCarousel.scss';
 import { BASE_URL, ICollection } from "../../react-app-env.d";
+import React from "react";
+
+import './CustomCarousel.scss';
 
 export const CustomCarousel = ({ data }: {
     data: ICollection[]
@@ -12,7 +14,7 @@ export const CustomCarousel = ({ data }: {
                     <Carousel.Item key={item.id}>
                         <img
                             className="carousel-img"
-                            
+
                             src={item?.image == null ?
                                 '../ImageNotFound.png'
                                 : `${BASE_URL}/${item?.image}`

@@ -4,21 +4,17 @@ import { useParams } from 'react-router-dom';
 import { BASE_API_URL, BASE_URL, ICollection } from '../../react-app-env.d';
 
 const CollectionPage = () => {
-    useEffect(() => {
-        // 👇️ scroll to top on page load
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    }, []);
-    let url: string = `${BASE_API_URL}/Collections?SearchString=`;
     const { id } = useParams();
     let [data, setData] = useState<ICollection>();
-    // console.log(name);
+    
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
         try {
             axios.get(BASE_API_URL + `/Collections/${id}`).then((res) => {
                 setData(res.data);
             });
         } catch (e: any) {
-            // console.error(e);
             console.log("Error: " + e);
         }
     }, []);
@@ -32,7 +28,7 @@ const CollectionPage = () => {
                         <img className='w-75'
                             src={data?.image == null ?
                                 '../ImageNotFound.png'
-                                 : `${BASE_URL}/${data?.image}`}
+                                : `${BASE_URL}/${data?.image}`}
                             alt='Product image' />
                     </div>
                     <div className='col-md-6'>
@@ -47,10 +43,6 @@ const CollectionPage = () => {
                                 data?.tokens[0]?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper malesuada justo,non posuere quam tempus vitae.'
                             }
                         </p>
-                        <div className='d-flex align-items-center'>
-                            {/*<input type='number' className='form-control w-25 me-3' value={number}*/}
-                            {/*       onChange={(e) => setNumber(+e.target.value)} min='1' />*/}
-                        </div>
                         <button className='btn w-50 d-block btn-primary'>Add to Cart</button>
                     </div>
                 </div>

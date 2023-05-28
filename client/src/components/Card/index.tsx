@@ -1,15 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../store/hooks';
 import { updateAction } from '../../store/reducers/collections';
+import { Alert } from '../../components/Alert';
+import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
+import { tokenUtility } from '../../utils/tokenUtility';
+import { makeClient } from '../../api/client';
+
+import React from 'react';
+import axios from 'axios';
 
 import "./Card.scss"
-import { Alert } from 'components/Alert';
-import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
-import { useAppSelector } from 'store/hooks';
-import { tokenUtility } from 'utils/tokenUtility';
-import { makeClient } from 'api/client';
 
 const Card = ({ title, author, update, image, price, id, onClick }: {
     update: () => void
@@ -22,9 +24,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
     onClick: any
 }) => {
     onClick();
-    // console.log(id, 'id');
     const navigate = useNavigate();
-    // console.log(title, 'title');
     const dispatch = useDispatch();
     let [showAlert, setShowAlert] = useState<boolean>();
 
@@ -36,6 +36,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
     let user = useAppSelector((state) => state.accountSlice.user);
 
     let [isAuth, setIsAuth] = useState<boolean>();
+
     useEffect(() => {
         setIsAuth(Boolean(user));
     }, [user])
@@ -61,7 +62,6 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                     Authorization: `Bearer ${authToken}`
                 }
             }).then((res) => {
-                // res.status === 200 ? alert('deleted') : alert('error' + res.status + res.statusText);
                 update();
             }).catch((err) => {
                 if (err.response.status == 401) {
@@ -72,23 +72,13 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                     setShowAlert(true);
                     setErrMsg(err.response.data.Message);
                 }
-                // console.log(Object.getOwnPropertyNames(err.response.data));
-                // else if(err.response)
-
-                // alert("Please login before deleting collection");
-                // console.log(Object.getOwnPropertyNames(err));
-                // alert(err)
             });
         } catch (e: any) {
             console.error(e);
-            // throw new Error(e);
         }
     };
 
-    //atob() method decodes a base-64 encoded string.
-
     const setUpdate = () => {
-        // console.log(id, 'id');
         dispatch(updateAction(id));
         navigate(`/update-collection/${id}`);
     }
@@ -99,11 +89,7 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
     }
     return (
         <div className='col-md-4'>
-            {showAlert === true ? (
-                <Alert message={errMsg}></Alert>
-            ) : (
-                <span></span>
-            )}
+            {showAlert ? <Alert message={errMsg}></Alert> : <></>}
             <div className='card'>
                 <img
                     src={image == null ? "ImageNotFound.png" : `${BASE_URL}/${image}`}
@@ -120,15 +106,13 @@ const Card = ({ title, author, update, image, price, id, onClick }: {
                         }
                     </div>
                     <div className='d-flex justify-content-between'>
-                        {/* <span onClick={viewCollection} className='btn d-block btn-primary'>View collection</span> */}
                         {isAuth ?
-                            <span onClick={setUpdate} className='btn d-block btn-transparent border border-primary'>Update</span> : <></>
-                        }
-                        {isAuth ?
-                            <span onClick={delItem} className='btn d-block btn-transparent bg-transparent border border-primary'>
-                                <i className="bi bi-trash3 text-danger"></i>
-                            </span>
-                            : <></>
+                            <>
+                                <span onClick={setUpdate} className='btn d-block btn-transparent border border-primary'>Update</span>
+                                <span onClick={delItem} className='btn d-block btn-transparent bg-transparent border border-primary'>
+                                    <i className="bi bi-trash3 text-danger"></i>
+                                </span>
+                            </> : <></>
                         }
                     </div>
                 </div>

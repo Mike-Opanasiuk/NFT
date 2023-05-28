@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../store/hooks';
 import axios from 'axios';
+import { useAppSelector } from '../../store/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Alert } from 'components/Alert';
+import { Alert } from '../../components/Alert';
 import { BASE_URL, BASE_API_URL } from '../../react-app-env.d';
 
 
@@ -14,16 +14,28 @@ interface IItem {
 }
 
 const UpdateCollection = () => {
-    useEffect(() => {
-        // 👇️ scroll to top on page load
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    }, []);
-    // console.log(id);
+    const [status, setStatus] = useState<string>('');
+    let [collectionStartImage, setCollectionStartImage] = useState<string>("");
+    let [showAlert, setShowAlert] = useState<boolean>();
+    let [alertMessage, setAlertMessage] = useState<string>("");
+    const [form, setForm] = useState<IItem>({
+        id: '',
+        name: '',
+        image: '',
+        imageName: ''
+    });
+
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
     const { id } = useParams();
+    const idImage: string = useAppSelector((state) => state.collectionSlice.idUpdated);
+
+
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         try {
             axios.get(BASE_API_URL + `/Collections/${id}`).then((res) => {
-                if(res.data.image) {
+                if (res.data.image) {
                     setCollectionStartImage(BASE_URL + '/' + res.data.image);
                 }
                 else {
@@ -32,26 +44,14 @@ const UpdateCollection = () => {
                 changeHandler('name')(res.data.name);
             });
         } catch (e: any) {
-            // console.error(e);
             console.log("Error: " + e);
         }
     }, []);
 
-    const [status, setStatus] = useState<string>('');
-   
-    let [collectionStartImage, setCollectionStartImage] = useState<string>("");
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    const [form, setForm] = useState<IItem>({
-        id: '',
-        name: '',
-        image: '',
-        imageName: ''
-    });
-    const navigate = useNavigate();
-    const idImage: string = useAppSelector((state) => state.collectionSlice.idUpdated);
+
+
     const _handleReaderLoaded = (readerEvt: any) => {
         let binaryString = readerEvt.target.result;
-        // console.log(btoa(binaryString));
         changeHandler('image')(btoa(binaryString));
     };
 
@@ -61,14 +61,9 @@ const UpdateCollection = () => {
             [fieldName]: value
         });
     };
-    let [showAlert, setShowAlert] = useState<boolean>();
-    let [alertMessage, setAlertMessage] = useState<string>("");
-
-    // console.log(idImage,"idddd");
 
     const submitHandler = async (e: any) => {
         e.preventDefault();
-        // console.log(idImage);
         try {
             await axios.put(`${BASE_API_URL}/Collections/update`, {
                 id: idImage as string,
@@ -81,25 +76,16 @@ const UpdateCollection = () => {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token')
                 }
             }).then((res) => {
-                // console.log(form);
-                // console.log(res);
-                if (res.data) {
-                    // console.log(res.data);
-                }
                 if (res.status === 200) {
-                    // alert('updated successfully');
-                    navigate('/');
+                    navigate('/collections');
                 }
                 if (res.status) {
                     setStatus(res.statusText);
-                    // console.log(res.status, res.statusText);
                 }
                 if (res.data === undefined) {
                     setAlertMessage('Collection not found')
                     setShowAlert(true);
-                    // alert('Collection not found');
-                    navigate('/');
-                    // throw new Error('Collection not found');
+                    navigate('/collections');
                 }
             }).catch((error) => {
                 if (error.response && error.response.status) {
@@ -112,26 +98,17 @@ const UpdateCollection = () => {
                         setShowAlert(true);
                     }
                 }
-
-                // alert(error.response)
-                // throw new Error(error);
             });
         } catch (e: any) {
-            // console.error(e);
-            // setAlertMessage(e.response)
             setAlertMessage("An error has occured")
             setShowAlert(true);
-
-            // throw new Error(e);
         }
     };
     const onChange = (e: any) => {
         let file = e.target.files[0];
-        // console.log(file);
         if (file) {
             var imagePath = URL.createObjectURL(e.target.files[0]);
             setCollectionStartImage(imagePath);
-            // console.log("12345578");
             setForm({
                 ...form,
                 imageName: file.name
@@ -150,11 +127,7 @@ const UpdateCollection = () => {
 
     return (
         <div className='mt-5'>
-            {showAlert === true ? (
-                <Alert message={alertMessage}></Alert>
-            ) : (
-                <span></span>
-            )}
+            {showAlert ? <Alert message={alertMessage}></Alert> : <></>}
 
             <h1 className='mb-5 d-flex flex-column align-items-center w-100'>Update collection</h1>
             <p className='mb-4 d-flex flex-column align-items-center w-100' onClick={() => {

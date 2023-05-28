@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
-import {tokenUtility} from "../utils/tokenUtility";
+import { tokenUtility } from "../utils/tokenUtility";
 import { BASE_API_URL } from '../react-app-env.d';
 
-function makeAxiosInstance(baseRoute : string) {
+function makeAxiosInstance(baseRoute: string) {
     const client = axios.create({
         baseURL: `${BASE_API_URL}/${baseRoute}/`
     });
@@ -21,10 +21,9 @@ function makeAxiosInstance(baseRoute : string) {
     return client;
 }
 
-class Client
-{
+class Client {
     private _client: AxiosInstance;
-    constructor(baseRoute : string) {
+    constructor(baseRoute: string) {
         this._client = makeAxiosInstance(baseRoute);
     }
 

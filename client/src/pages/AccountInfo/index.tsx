@@ -1,13 +1,10 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../store/hooks";
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BASE_API_URL, ICollection, IUser } from "../../react-app-env.d";
-import { tokenUtility } from "utils/tokenUtility";
-import { makeClient } from "api/client";
+import { ICollection, IUser } from "../../react-app-env.d";
+import { makeClient } from "../../api/client";
 
 export const AccountInfo = () => {
-    var token = tokenUtility.getToken();
     let [user, setUser] = useState<IUser>();
     let [collections, setCollections] = useState<ICollection[]>([]);
 
@@ -42,7 +39,7 @@ export const AccountInfo = () => {
             </Link>
         )
     }
-    // console.log(user);
+    
     return (
         <div className="container rounded bg-white">
             <div className="row">

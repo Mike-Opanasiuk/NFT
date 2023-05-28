@@ -4,19 +4,27 @@ import { loginAction, loginActionAsync } from '../../store/reducers/account';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { FormComponent } from '../../components/Form';
 import { Spinner } from '../../components/Spinner';
-import { tokenUtility } from '../../utils/tokenUtility';
-import { Alert } from 'components/Alert';
+import { Alert } from '../../components/Alert';
+import React from 'react';
 
 export const Login = () => {
     let [remember, setRemember] = useState<boolean>();
+    let [alertMessage, setAlertMessage] = useState<string>("");
+
+    const status = useAppSelector((state) => state.accountSlice.status);
+    const user = useAppSelector((state) => state.accountSlice.user);
+    const isAuthenticated = Boolean(user);
+    const dispatch = useAppDispatch();
+    const nav = useNavigate();
+
+    if (isAuthenticated) {
+        dispatch(loginAction(isAuthenticated))
+        nav('/');
+    }
 
     const onRememberChange = () => {
         setRemember(!remember);
     };
-    const dispatch = useAppDispatch();
-    const nav = useNavigate();
-
-    let [alertMessage, setAlertMessage] = useState<string>("");
 
     const onClickHandle = (data: any) => {
         try {
@@ -24,21 +32,13 @@ export const Login = () => {
             dispatch(loginActionAsync(data));
         }
         catch (error: any) {
-            console.log("TODO: ERROR")
+            console.log(error);
         }
     };
 
-    const status = useAppSelector((state) => state.accountSlice.status);
-    const user = useAppSelector((state) => state.accountSlice.user);
-    const isAuthenticated = Boolean(user);
-    if (isAuthenticated) {
-        dispatch(loginAction(isAuthenticated))
-        nav('/');
-    }
-
     return (
         <FormComponent onFinish={onClickHandle}>
-            {alertMessage == "" ? <></> : <Alert message={alertMessage}></Alert> }
+            { alertMessage == "" ? <></> : <Alert message={alertMessage}></Alert> }
             <div className='container'>
                 <div className='row'>
                     <div className='col-4 offset-4'>
