@@ -6,6 +6,7 @@ import TokensPage from './pages/TokensPage';
 import CollectionsPage from './pages/CollectionsPage';
 import CreateCollection from './pages/CreateCollection';
 import CreateTokenPage from './pages/CreateTokenPage';
+import TokenPage from 'pages/TokenPage';
 import { Route, Routes } from 'react-router-dom';
 import { About } from './pages/About';
 import { AccountInfo } from './pages/AccountInfo';
@@ -37,6 +38,7 @@ export const App = () => {
                     <Route path="/about" element={<About />}></Route>
                     <Route path="/tokens" element={<TokensPage />}></Route>
                     <Route path="/token/create" element={<CreateTokenPage />}></Route>
+                    <Route path="/token/:id" element={<TokenPage />}></Route>
                     <Route path="/collections" element={<CollectionsPage />}></Route>
                     <Route path="/collection/create" element={<CreateCollection />}></Route>
                     <Route path="/account" element={<AccountInfo />}></Route>

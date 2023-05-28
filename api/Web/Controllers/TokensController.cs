@@ -1,4 +1,6 @@
-﻿using Application.Features.TokenFeatures.Commands;
+﻿using Application.Features.CollectionFeatures.Dtos;
+using Application.Features.CollectionFeatures.Queries;
+using Application.Features.TokenFeatures.Commands;
 using Application.Features.TokenFeatures.Dtos;
 using Application.Features.TokenFeatures.Queries;
 using AutoMapper;
@@ -27,6 +29,13 @@ public class TokensController : BaseController
     public async Task<ActionResult<TokensResponseDto>> GetTokensAsync([FromQuery] GetTokensQuery request)
     {
         return await mediator.Send(request);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{tokenId}")]
+    public async Task<ActionResult<TokenDto>> GetTokenByIdAsync([FromRoute] Guid tokenId)
+    {
+        return await mediator.Send(new GetTokenByIdQuery() { Id = tokenId });
     }
 
     [HttpPost("create")]

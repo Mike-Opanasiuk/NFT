@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../store/hooks';
@@ -6,10 +7,7 @@ import { updateAction } from '../../store/reducers/collections';
 import { Alert } from '../Alert';
 import { tokenUtility } from '../../utils/tokenUtility';
 import { makeClient } from '../../api/client';
-import { BASE_API_URL, BASE_URL } from '../../react-app-env.d';
-
-import React from 'react';
-import axios from 'axios';
+import { BASE_URL } from '../../react-app-env.d';
 
 import "./TokenCard.scss"
 
@@ -27,15 +25,10 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     let [showAlert, setShowAlert] = useState<boolean>();
-
-    const viewCollection = () => {
-        navigate(`/collection/${id}`);
-    };
-    const authToken = localStorage.getItem('access_token');
+    let [isAuth, setIsAuth] = useState<boolean>();
+    let [errMsg, setErrMsg] = useState<string>("");
 
     let user = useAppSelector((state) => state.accountSlice.user);
-
-    let [isAuth, setIsAuth] = useState<boolean>();
 
     useEffect(() => {
         setIsAuth(Boolean(user));
@@ -53,15 +46,11 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
         }
     }, []);
 
-    let [errMsg, setErrMsg] = useState<string>("");
     const delItem = () => {
         try {
-            axios.delete(`${BASE_API_URL}/Collections/delete?CollectionId=${id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`
-                }
-            }).then((res) => {
+            const client = makeClient("tokens");
+
+            client.delete(`delete?tokenId=${id}`).then((res) => {
                 update();
             }).catch((err) => {
                 if (err.response.status == 401) {
@@ -73,15 +62,12 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
                     setErrMsg(err.response.data.Message);
                 }
             });
+
         } catch (e: any) {
             console.error(e);
         }
     };
 
-    const setUpdate = () => {
-        dispatch(updateAction(id));
-        navigate(`/update-collection/${id}`);
-    }
     if (showAlert) {
         setTimeout(() => {
             setShowAlert(false);
@@ -96,7 +82,7 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
                     className='card-img-top image-h' alt='Image' />
                 <div className='card-body'>
                     <div className='d-flex align-items-center justify-content-between'>
-                        <h5 className='btn btn-link p-0' onClick={viewCollection}>{title}</h5>
+                        <Link className='btn btn-link p-0' to={`/token/${id}`}>{title}</Link>
                     </div>
                     <div className='d-flex align-items-center justify-content-between'>
                         <p className='card-text'>Owner {author}</p>
@@ -108,7 +94,7 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
                     <div className='d-flex justify-content-between'>
                         {isAuth ?
                             <>
-                                <span onClick={setUpdate} className='btn d-block btn-transparent border border-primary'>Update</span>
+                                <Link className='btn d-block btn-transparent border border-primary' to={`/update-token/${id}`}>Update</Link>
                                 <span onClick={delItem} className='btn d-block btn-transparent bg-transparent border border-primary'>
                                     <i className="bi bi-trash3 text-danger"></i>
                                 </span>

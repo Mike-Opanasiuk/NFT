@@ -33,11 +33,9 @@ const CollectionPage = () => {
                     </div>
                     <div className='col-md-6'>
                         <h2>{data?.name}</h2>
-                        <p className='text-muted'>{
-                            data?.tokens[0]?.author?.userName || 'One-Gem-123'
+                        <p className='text-muted'> @{
+                            data?.author?.userName || 'anonymous'
                         }</p>
-                        <p className='text-success h4 d-block'>{data?.tokens[0]?.price || '145'}$</p>
-
                         <p>
                             {
                                 data?.tokens[0]?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper malesuada justo,non posuere quam tempus vitae.'
