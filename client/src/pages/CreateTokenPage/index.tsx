@@ -21,6 +21,7 @@ const CreateTokenPage = () => {
     const [alertMessage, setAlertMessage] = useState<string>("");
     const [collectionImage, setCollectionImage] = useState<string>("");
     const [userCollections, setUserCollections] = useState<ICollection[]>([]);
+    const defaultCollectionText = "Choose collection";
 
     const [form, setForm] = useState<TokenFormData>({
         name: '',
@@ -73,6 +74,11 @@ const CreateTokenPage = () => {
                 setShowAlert(true);
                 return;
             }
+        }
+        if (form.collectionId === defaultCollectionText || form.collectionId === '') {
+            setAlertMessage("Please, select collection.");
+            setShowAlert(true);
+            return;
         }
         try {
             const client = makeClient("tokens");
@@ -160,7 +166,7 @@ const CreateTokenPage = () => {
                         className='form-select mb-3'
                         onChange={(e) => changeHandler('collectionId')(e.target.value)} >
 
-                        <option> Choose collection </option>
+                        <option> {defaultCollectionText} </option>
                         {
                             userCollections.map((c, index) => (
                                 <option key={index} value={c.id} >{c.name}</option>
@@ -191,7 +197,7 @@ const CreateTokenPage = () => {
                     <button
                         className='btn btn-transparent border border-primary d-block m-auto mt-4'
                         type='submit'>
-                            Create
+                        Create
                     </button>
                 </form>
             </div>
