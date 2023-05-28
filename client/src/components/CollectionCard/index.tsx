@@ -54,27 +54,23 @@ const CollectionCard = ({ title, author, update, image, id, onClick }: {
 
     let [errMsg, setErrMsg] = useState<string>("");
     const delItem = () => {
-        try {
-            axios.delete(`${BASE_API_URL}/Collections/delete?CollectionId=${id}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`
-                }
-            }).then((res) => {
-                update();
-            }).catch((err) => {
-                if (err.response.status == 401) {
-                    setErrMsg("Please, login first");
-                    setShowAlert(true);
-                }
-                else if (err.response.status == 400) {
-                    setShowAlert(true);
-                    setErrMsg(err.response.data.Message);
-                }
-            });
-        } catch (e: any) {
-            console.error(e);
-        }
+        axios.delete(`${BASE_API_URL}/Collections/delete?CollectionId=${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${authToken}`
+            }
+        }).then((res) => {
+            update();
+        }).catch((err) => {
+            if (err.response.status == 401) {
+                setErrMsg("Please, login first");
+                setShowAlert(true);
+            }
+            else if (err.response.status == 400) {
+                setShowAlert(true);
+                setErrMsg(err.response.data.Message);
+            }
+        });
     };
 
     const setUpdate = () => {

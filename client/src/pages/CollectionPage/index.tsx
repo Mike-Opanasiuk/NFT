@@ -6,17 +6,15 @@ import { BASE_API_URL, BASE_URL, ICollection } from '../../react-app-env.d';
 const CollectionPage = () => {
     const { id } = useParams();
     let [data, setData] = useState<ICollection>();
-    
+
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
-        try {
-            axios.get(BASE_API_URL + `/Collections/${id}`).then((res) => {
-                setData(res.data);
-            });
-        } catch (e: any) {
-            console.log("Error: " + e);
-        }
+        axios.get(BASE_API_URL + `/Collections/${id}`).then((res) => {
+            setData(res.data);
+        }).catch((e) => {
+            console.log(e);
+        });
     }, []);
 
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { ICollection, IUser } from "../../react-app-env.d";
 import { makeClient } from "../../api/client";
@@ -7,39 +7,27 @@ import { makeClient } from "../../api/client";
 export const AccountInfo = () => {
     let [user, setUser] = useState<IUser>();
     let [collections, setCollections] = useState<ICollection[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        try {
+        const client = makeClient("account");
+        client.get("profile").then((res) => {
+            user = res.data;
+            setUser(user)
             const client = makeClient("account");
-            client.get("profile").then((res) => {
-                user = res.data;
-                setUser(user)
-                try {
-
-                    const client = makeClient("account");
-                    client.get(`${user?.id}/collections`).then((res) => {
-                        setCollections(res.data);
-                    });
-                }
-                catch (e: any) {
-                    console.log(e);
-                }
+            client.get(`${user?.id}/collections`).then((res) => {
+                setCollections(res.data);
             });
-        }
-        catch (e: any) {
+
+
+        }).catch((e: any) => {
             console.log(e);
-        }
+            navigate("/not-found")
+        });
+
 
     }, []);
 
-    if (!user) {
-        return (
-            <Link to="/login" className="text-center">
-                <h1>Login first . . .</h1>
-            </Link>
-        )
-    }
-    
     return (
         <div className="container rounded bg-white">
             <div className="row">

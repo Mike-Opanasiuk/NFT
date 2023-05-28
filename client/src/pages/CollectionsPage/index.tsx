@@ -25,7 +25,7 @@ const CollectionsPage = () => {
     const [sort, setSort] = useState<Sort>('asc');
     const [sorting, setSorting] = useState<Sorting>('name');
     const [data, setData] = useState<ICollection[]>([]);
-    
+
     const inputRef = useRef<HTMLInputElement>(null);
     let url: string = `${BASE_API_URL}/Collections?`;
     let pages: string = `Page=${page}&PerPage=${defaultPerPage}`;
@@ -63,52 +63,45 @@ const CollectionsPage = () => {
     useEffect(() => {
         if (category !== '') {
             setStatus('Loading...');
-            try {
-                let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
-                console.log(requestUrl);
-                axios.get(requestUrl).then((res) => {
-                    if (!res.data.collections.length) {
-                        setData([]);
-                        setPagesCount(1);
-                        setStatus('Not Found');
-                    } else {
-                        setData(res.data.collections);
-                        setPagesCount(res.data['totalPages']);
-                        setStatus('Success');
-                    }
-                });
-            } catch (e: any) {
-                console.error(e);
-            }
-        } else if (sort !== '') {
-            setStatus('Loading...');
-            try {
-                axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
-                    if (!res.data.collections.length) {
-                        setData([]);
-                        setPagesCount(1);
-                        setStatus('Not Found');
-                    } else {
-                        setData(res.data.collections);
-                        setPagesCount(res.data['totalPages']);
-                        setStatus('Success');
-                    }
-                });
-            } catch (e: any) {
-                console.error(e);
-            }
-        } else {
-            try {
-                axios.get(url + pages).then((res) => {
-                    console.log(url + pages);
+            let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
+            console.log(requestUrl);
+            axios.get(requestUrl).then((res) => {
+                if (!res.data.collections.length) {
+                    setData([]);
+                    setPagesCount(1);
+                    setStatus('Not Found');
+                } else {
                     setData(res.data.collections);
                     setPagesCount(res.data['totalPages']);
                     setStatus('Success');
-                });
-
-            } catch (e: any) {
+                }
+            }).catch((e) => {
+                console.log(e);
+            });
+        } else if (sort !== '') {
+            setStatus('Loading...');
+            axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
+                if (!res.data.collections.length) {
+                    setData([]);
+                    setPagesCount(1);
+                    setStatus('Not Found');
+                } else {
+                    setData(res.data.collections);
+                    setPagesCount(res.data['totalPages']);
+                    setStatus('Success');
+                }
+            }).catch((e) => {
                 console.error(e);
-            }
+            });
+        } else {
+            axios.get(url + pages).then((res) => {
+                console.log(url + pages);
+                setData(res.data.collections);
+                setPagesCount(res.data['totalPages']);
+                setStatus('Success');
+            }).catch((e) => {
+                console.error(e);
+            });
         }
     }, [page, category, sort, count]);
 

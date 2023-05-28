@@ -47,25 +47,20 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
     }, []);
 
     const delItem = () => {
-        try {
-            const client = makeClient("tokens");
+        const client = makeClient("tokens");
 
-            client.delete(`delete?tokenId=${id}`).then((res) => {
-                update();
-            }).catch((err) => {
-                if (err.response.status == 401) {
-                    setErrMsg("Please, login first");
-                    setShowAlert(true);
-                }
-                else if (err.response.status == 400) {
-                    setShowAlert(true);
-                    setErrMsg(err.response.data.Message);
-                }
-            });
-
-        } catch (e: any) {
-            console.error(e);
-        }
+        client.delete(`delete?tokenId=${id}`).then((res) => {
+            update();
+        }).catch((err) => {
+            if (err.response.status == 401) {
+                setErrMsg("Please, login first");
+                setShowAlert(true);
+            }
+            else if (err.response.status == 400) {
+                setShowAlert(true);
+                setErrMsg(err.response.data.Message);
+            }
+        });
     };
 
     if (showAlert) {
