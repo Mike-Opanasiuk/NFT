@@ -119,13 +119,15 @@ const CreateTokenPage = () => {
             setShowAlert(true);
         }
 
-        if (showAlert) {
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 5000);
-        }
+        
     }, []);
 
+    if (showAlert) {
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 5000);
+    }
+    
     return (
         <div className='d-flex justify-content-center mt-5'>
             {showAlert ? <Alert message={alertMessage}></Alert> : <></>}
