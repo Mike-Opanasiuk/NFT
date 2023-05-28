@@ -39,7 +39,7 @@ export const Footer = () => {
                                 <i className="fas fa-gem me-3"></i>NFT Marketplace
                             </h6>
                             <p>
-                                Here you can buy, sell and discover different nft products!
+                                Here you can buy, sell and discover different NFT products!
                             </p>
                         </div>
 
@@ -51,13 +51,13 @@ export const Footer = () => {
                                 <Link to="/" className="text-reset">Home</Link>
                             </p>
                             <p>
-                                <Link to="/login" className="text-reset">Login</Link>
+                                <Link to="/collections" className="text-reset">Collections</Link>
                             </p>
                             <p>
-                                <Link to="/register" className="text-reset">Register</Link>
+                                <Link to="/tokens" className="text-reset">Tokens</Link>
                             </p>
                             <p>
-                                <Link to="/" className="text-reset">Pay</Link>
+                                <Link to="/about" className="text-reset">About</Link>
                             </p>
                         </div>
 
@@ -66,24 +66,10 @@ export const Footer = () => {
                                 Useful links
                             </h6>
                             <p>
-                                <a href="#!" className="text-reset">
-                                    Pricing
-                                </a>
+                                <Link to="/login" className="text-reset">Login</Link>
                             </p>
                             <p>
-                                <a href="#!" className="text-reset">
-                                    Settings
-                                </a>
-                            </p>
-                            <p>
-                                <a href="#!" className="text-reset">
-                                    Orders
-                                </a>
-                            </p>
-                            <p>
-                                <a href="#!" className="text-reset">
-                                    Help
-                                </a>
+                                <Link to="/register" className="text-reset">Register</Link>
                             </p>
                         </div>
 
@@ -94,7 +80,7 @@ export const Footer = () => {
                             </p>
                             <p>
                                 <i className="fas fa-envelope me-3"></i>
-                                nft.com
+                                NFT.com
                             </p>
                             <p>
                                 <i className="fas fa-phone me-3"></i> +380 67 333 11 11
@@ -109,7 +95,7 @@ export const Footer = () => {
 
             <div className="text-center p-4">
                 © 2023 Copyright:
-                <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
+                <a className="text-reset fw-bold" href="/">
                     NFT.com
                 </a>
             </div>
