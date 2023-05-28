@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { makeClient } from '../../api/client';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
+import './Navbar.scss';
+
 export const Navbar = () => {
     let user = useAppSelector((state) => state.accountSlice.user);
 
@@ -35,13 +37,13 @@ export const Navbar = () => {
     };
     return (
         <nav className='navbar navbar-expand-lg neon-blue'>
-            <div className='container-fluid'>
+            <div className='container-fluid ps-0'>
                 <Link className='navbar-brand' to='/'>
                     NFT
                 </Link>
 
                 <div className='collapse navbar-collapse' id='navbarColor01'>
-                    <ul className='navbar-nav me-auto'>
+                    <ul className='navbar-nav'>
                         <li className='nav-item'>
                             <Link to='/collections' className='nav-link'>
                                 Collections
@@ -60,25 +62,31 @@ export const Navbar = () => {
                     </ul>
                 </div>
                 {isAuth ? (
-                    <div>
-                        <Link to='/collection/create' className='me-2'>
-                            <button className='btn btn-secondary align-self-end'>
-                                + Create collection
-                            </button>
-                        </Link>
-                        <Link to='/token/create' className='me-2'>
-                            <button className='btn btn-secondary align-self-end'>
-                                + Create token
-                            </button>
-                        </Link>
+                    <>
+                        <div className='collapse navbar-collapse flex-row-reverse me-4' id='navbarColor01'>
+                            <ul className='navbar-nav'>
+                                <li className='nav-item'>
+                                    <Link to='/collection/create' className='nav-link'>
+                                        + Create collection
+                                    </Link>
+                                </li>
+                                <li className='nav-item'>
+                                    <Link to='/token/create' className='nav-link'>
+                                        + Create token
+                                    </Link>
+                                </li>
+                                <li className='nav-item'>
+                                    <Link to='/about' className='nav-link' onClick={onLogout}>
+                                        Logout
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
 
-                        <button className='btn btn-secondary align-self-end' onClick={onLogout}>
-                            Logout
-                        </button>
-                        <Link to='/account'>
+                        <Link to='/account' className='me-3' >
                             <i className='far fa-user-circle fa-2x align-middle'></i>
                         </Link>
-                    </div>
+                    </>
                 ) : (
                     <div>
                         <Link to='/login' className='me-2'>
