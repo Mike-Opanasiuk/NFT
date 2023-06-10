@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Infrastructure.Data.EntitiesConfiguration.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static Shared.AppConstant;
 
@@ -22,7 +23,15 @@ internal class TokenEntityConfiguration : BaseEntityConfiguration<TokenEntity>
 
         builder
             .HasOne(token => token.Author)
-            .WithMany(user => user.Tokens);
+            .WithMany(user => user.Tokens)
+            .HasForeignKey(token => token.AuthorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder
+            .HasOne(token => token.CurrentOwner)
+            .WithMany(user => user.OwnedTokens)
+            .HasForeignKey(token => token.CurrentOwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(token => token.Collection)

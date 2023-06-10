@@ -23,7 +23,7 @@ export const loginActionAsync = createAsyncThunk('loginActionAsync', async (requ
         response = await accountService.loginAsync(request);
     }
     catch (error) {
-        throw new Error("Wrong credentials");
+        throw new Error("Invalid credentials");
     }
     tokenUtility.setToken(response.data.token);
     return response.data.user;
@@ -35,7 +35,7 @@ export const registerActionAsync = createAsyncThunk('registerActionAsync', async
         response = await accountService.registerAsync(request);
     }
     catch (error) {
-        throw new Error("Wrong credentials");
+        throw new Error("Invalid credentials");
     }
     tokenUtility.setToken(response.data.token);
     return response.data.user;

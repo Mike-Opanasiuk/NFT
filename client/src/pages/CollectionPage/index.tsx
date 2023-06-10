@@ -34,12 +34,12 @@ const CollectionPage = () => {
                         <p className='text-muted'> @{
                             data?.author?.userName || 'anonymous'
                         }</p>
-                        <p>
+                        {/* <p>
                             {
                                 data?.tokens[0]?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ullamcorper malesuada justo,non posuere quam tempus vitae.'
                             }
-                        </p>
-                        <button className='btn w-50 d-block btn-primary'>Add to Cart</button>
+                        </p> */}
+                        {/* <button className='btn w-50 d-block btn-primary'>Add to Cart</button> */}
                     </div>
                 </div>
             </div>

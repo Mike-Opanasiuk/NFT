@@ -31,7 +31,6 @@ public class CollectionsController : BaseController
     [HttpGet("most-popular/{count}")]
     public async Task<ActionResult<IEnumerable<CollectionDto>>> GetMostPopularCollections([FromRoute] int count)
     {
-        Console.WriteLine(count.ToString());
         return Ok(await mediator.Send(new GetMostPopularCollectionsQuery(count)));
     }
 

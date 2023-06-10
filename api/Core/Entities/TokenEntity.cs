@@ -15,6 +15,7 @@ public class TokenEntity : BaseEntity
 
     // foreign keys
     public Guid AuthorId { get; set; }
+    public Guid CurrentOwnerId { get; set; }
     public Guid CollectionId { get; set; }
 
     // navigation properties
@@ -24,4 +25,7 @@ public class TokenEntity : BaseEntity
 
     /* author of this token */
     public UserEntity Author { get; set; }
+
+    /* user who bought and owns this token */
+    public UserEntity CurrentOwner { get; set; }
 }

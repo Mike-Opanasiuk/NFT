@@ -41,67 +41,59 @@ const Home = () => {
     useEffect(() => {
         if (category !== '') {
             setStatus('Loading...');
-            try {
-                let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
-                axios.get(requestUrl).then((res) => {
 
-                    if (!res.data.collections.length) {
-                        setData([]);
-                        setPagesCount(1);
-                        setStatus('Not Found');
-                    } else {
-                        setData(res.data.collections);
-                        setPagesCount(res.data['totalPages']);
-                        setStatus('Success');
-                    }
-                });
-            } catch (e: any) {
-                console.error(e);
-            }
+            let requestUrl = url + `&SearchString=${category}` + `&page=${page}`;
+            axios.get(requestUrl).then((res) => {
+
+                if (!res.data.collections.length) {
+                    setData([]);
+                    setPagesCount(1);
+                    setStatus('Not Found');
+                } else {
+                    setData(res.data.collections);
+                    setPagesCount(res.data['totalPages']);
+                    setStatus('Success');
+                }
+            }).catch((e) => {
+                console.log(e);
+            });
         } else if (sort !== '') {
             setStatus('Loading...');
-            try {
-                axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
-                    if (!res.data.collections.length) {
-                        setData([]);
-                        setPagesCount(1);
-                        setStatus('Not Found');
-                    } else {
-                        setData(res.data.collections);
-                        setPagesCount(res.data['totalPages']);
-                        setStatus('Success');
-                    }
-                });
-            } catch (e: any) {
+            axios.get(url + pages + `&OrderBy=${sorting}&Order=${sort}`).then((res) => {
+                if (!res.data.collections.length) {
+                    setData([]);
+                    setPagesCount(1);
+                    setStatus('Not Found');
+                } else {
+                    setData(res.data.collections);
+                    setPagesCount(res.data['totalPages']);
+                    setStatus('Success');
+                }
+            }).catch((e) => {
                 console.error(e);
-            }
+            });
 
         } else {
-            try {
-                axios.get(`${url}${pages}`).then((res) => {
-                    setData(res.data.collections);
-                        setPagesCount(res.data['totalPages']);
-                        setStatus('Success');
-                });
-
-            } catch (e: any) {
+            axios.get(`${url}${pages}`).then((res) => {
+                setData(res.data.collections);
+                setPagesCount(res.data['totalPages']);
+                setStatus('Success');
+            }).catch((e) => {
                 console.error(e);
-            }
+            });
         }
     }, [page, category, sort, count]);
 
     const [mostPopularCollections, setMostPopularCollections] = useState<ICollection[]>([]);
-    
+
     useEffect(() => {
-        try {
-            const countOfCollections = 3;
-            const client = makeClient("collections");
-            client.get(`most-popular/${countOfCollections}`).then((res) => {
-                setMostPopularCollections(res.data);
-            });
-        } catch(e: any) {
-           console.log(e);
-        }
+        const countOfCollections = 3;
+        const client = makeClient("collections");
+        client.get(`most-popular/${countOfCollections}`).then((res) => {
+            setMostPopularCollections(res.data);
+        }).catch((e) => {
+            console.error(e);
+        });
     }, [])
 
     const compose = <T, R, S>(
@@ -144,7 +136,7 @@ const Home = () => {
 
     return (
         <div className='row'>
-             <CustomCarousel data={mostPopularCollections}></CustomCarousel>
+            <CustomCarousel data={mostPopularCollections}></CustomCarousel>
             <div className='row row-cols-1 row-cols-md-3 g-4'>
                 {
                     !state(data).length ? <h1>{status}</h1> : state(data).map(elem => (

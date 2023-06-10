@@ -11,6 +11,7 @@ export const Login = () => {
     let [remember, setRemember] = useState<boolean>();
     let [alertMessage, setAlertMessage] = useState<string>("");
 
+    const [showAlert, setShowAlert] = useState<boolean>();
     const status = useAppSelector((state) => state.accountSlice.status);
     const user = useAppSelector((state) => state.accountSlice.user);
     const isAuthenticated = Boolean(user);
@@ -27,18 +28,35 @@ export const Login = () => {
     };
 
     const onClickHandle = (data: any) => {
-        try {
-            data.remember = remember;
-            dispatch(loginActionAsync(data));
-        }
-        catch (error: any) {
-            console.log(error);
-        }
+        data.remember = remember;
+        dispatch(loginActionAsync(data)).then((res: any) => {
+            console.log(res);
+            if (res.error.message) {
+                setAlertMessage(res.error.message);
+                setShowAlert(true);
+            }
+        }).catch((e) => {
+            // if (e.response.status == 400) {
+            //     setAlertMessage(e.response.data.message);
+            // }
+            // else setAlertMessage("Wrong credentials");
+
+            // console.log("set true");
+            // setShowAlert(true);
+
+            // console.error(e);
+        });
     };
+
+    if (showAlert) {
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 5000);
+    }
 
     return (
         <FormComponent onFinish={onClickHandle}>
-            { alertMessage == "" ? <></> : <Alert message={alertMessage}></Alert> }
+            {showAlert ? <Alert message={alertMessage}></Alert> : <></>}
             <div className='container'>
                 <div className='row'>
                     <div className='col-4 offset-4'>

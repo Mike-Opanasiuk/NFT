@@ -48,6 +48,8 @@ const CollectionCard = ({ title, author, update, image, id, onClick }: {
             client.get("profile").then((res) => {
                 user = res.data;
                 setIsAuth(true);
+            }).catch((e: any) => {
+                console.error(e);
             });
         }
     }, []);

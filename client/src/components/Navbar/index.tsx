@@ -24,6 +24,8 @@ export const Navbar = () => {
             client.get("profile").then((res) => {
                 user = res.data;
                 setIsAuth(true);
+            }).catch((e) => {
+                console.error(e);
             });
         }
     }, []);

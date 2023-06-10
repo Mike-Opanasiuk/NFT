@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230604123652_Add_MoneyAvailable_FieldFor_UserEntity")]
+    partial class Add_MoneyAvailable_FieldFor_UserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,9 +113,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
 
-                    b.Property<Guid>("CurrentOwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .HasMaxLength(4096)
                         .HasColumnType("nvarchar(max)");
@@ -139,8 +138,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("CollectionId");
-
-                    b.HasIndex("CurrentOwnerId");
 
                     b.ToTable("Tokens");
                 });
@@ -346,7 +343,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.Entities.UserEntity", "Author")
                         .WithMany("Tokens")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.CollectionEntity", "Collection")
@@ -355,17 +352,9 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.UserEntity", "CurrentOwner")
-                        .WithMany("OwnedTokens")
-                        .HasForeignKey("CurrentOwnerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Author");
 
                     b.Navigation("Collection");
-
-                    b.Navigation("CurrentOwner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -427,8 +416,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.UserEntity", b =>
                 {
                     b.Navigation("Collections");
-
-                    b.Navigation("OwnedTokens");
 
                     b.Navigation("Tokens");
                 });

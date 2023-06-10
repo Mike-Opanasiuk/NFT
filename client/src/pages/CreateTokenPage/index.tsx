@@ -104,22 +104,19 @@ const CreateTokenPage = () => {
     };
 
     useEffect(() => {
-        try {
-            const client = makeClient("account");
+        const client = makeClient("account");
 
-            client.get("profile").then((res) => {
-                var user = res.data;
+        client.get("profile").then((res) => {
+            var user = res.data;
 
-                client.get(`${user.id}/collections`).then((response) => {
-                    setUserCollections(response.data)
-                })
+            client.get(`${user.id}/collections`).then((response) => {
+                setUserCollections(response.data)
             })
-        } catch (e: any) {
+        }).catch((e) => {
+            console.error(e);
             setAlertMessage("Internal server error")
             setShowAlert(true);
-        }
-
-        
+        })
     }, []);
 
     if (showAlert) {
@@ -127,7 +124,7 @@ const CreateTokenPage = () => {
             setShowAlert(false);
         }, 5000);
     }
-    
+
     return (
         <div className='d-flex justify-content-center mt-5'>
             {showAlert ? <Alert message={alertMessage}></Alert> : <></>}

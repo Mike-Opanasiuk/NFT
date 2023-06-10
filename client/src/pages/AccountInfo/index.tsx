@@ -19,12 +19,10 @@ export const AccountInfo = () => {
                 setCollections(res.data);
             });
 
-
         }).catch((e: any) => {
-            console.log(e);
+            console.error(e);
             navigate("/not-found")
         });
-
 
     }, []);
 

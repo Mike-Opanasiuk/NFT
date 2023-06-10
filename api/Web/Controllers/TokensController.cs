@@ -38,6 +38,13 @@ public class TokensController : BaseController
         return await mediator.Send(new GetTokenByIdQuery() { Id = tokenId });
     }
 
+    [AllowAnonymous]
+    [HttpGet("{collectionId}/tokens")]
+    public async Task<ActionResult<IEnumerable<TokenDto>>> GetTokensByCollectionIdAsync([FromRoute] Guid collectionId)
+    {
+        return Ok(await mediator.Send(new GetTokensByCollectionIdQuery() { CollectionId = collectionId }));
+    }
+
     [HttpPost("create")]
     public async Task<IActionResult> CreateTokenAsync([FromBody] CreateTokenRequest request)
     {
@@ -48,6 +55,16 @@ public class TokensController : BaseController
         await mediator.Send(command);
 
         return StatusCode(StatusCodes.Status201Created);
+    }
+
+    [HttpPost("buy-now/{tokenId}")]
+    public async Task<IActionResult> BuyNowTokenAsync([FromRoute] Guid tokenId)
+    {
+        var userId = HttpContext.GetCurrentUserGuid();
+        await mediator.Send(new BuyNowTokenCommand() { TokenId = tokenId, CurrentUserId = userId });
+
+        return Ok();
+
     }
 
     [HttpPut("update")]

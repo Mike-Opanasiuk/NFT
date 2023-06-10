@@ -40,6 +40,7 @@ public class CreateTokenHandler : IRequestHandler<CreateTokenCommand>
     public async Task Handle(CreateTokenCommand request, CancellationToken cancellationToken)
     {
         var tokenEntity = mapper.Map<TokenEntity>(request);
+        tokenEntity.CurrentOwnerId = request.AuthorId;
 
         if (!string.IsNullOrEmpty(request.Image))
         {

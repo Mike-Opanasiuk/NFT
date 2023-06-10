@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { registerActionAsync } from "../../store/reducers/account";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { FormComponent } from "../../components/Form";
 import { Spinner } from "../../components/Spinner";
+import { Alert } from "components/Alert";
+import { makeClient } from "api/client";
 
 export const Register = () => {
     const dispatch = useAppDispatch();
+    let [alertMessage, setAlertMessage] = useState<string>("");
+    const [showAlert, setShowAlert] = useState<boolean>();
 
-    const onClickHandle = (data: any) => {
-        dispatch(registerActionAsync(data));
+    const onClickHandle = async (data: any) => {
+        dispatch(registerActionAsync(data)).then((res: any) => {
+            console.log(res);
+            console.log(res.error.errors);
+            console.log(res.error.message)
+            if (res.error.message) {
+                setAlertMessage(res.error.message);
+                setShowAlert(true);
+            }
+        }).catch((e) => {
+            // if (e.response.status == 400) {
+            //     setAlertMessage(e.response.data.message);
+            // }
+            // else setAlertMessage("Wrong credentials");
+
+            // console.log("set true");
+            // setShowAlert(true);
+
+            // console.error(e);
+        });
     }
 
     const status = useAppSelector(state => state.accountSlice.status);
@@ -19,8 +41,14 @@ export const Register = () => {
         return <Navigate to="/" />;
     }
 
+    if (showAlert) {
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 5000);
+    }
     return (
         <FormComponent onFinish={onClickHandle}>
+            {showAlert ? <Alert message={alertMessage}></Alert> : <></>}
             <div className="container">
                 <div className="row">
                     <div className="col-4 offset-4">
@@ -57,15 +85,21 @@ export const Register = () => {
                             />
                         </div>
                     </div>
-                    <div className="col-4 offset-4 mt-5">
-                        <Link to="/login" className="text-decoration-none"><button type="button" className="btn btn-outline-dark col-5">
-                            Login instead</button></Link>
-                        <button type="submit" className="btn btn-outline-dark col-5 offset-2" onClick={onClickHandle}>
+                    <div className='col-4 offset-4 mt-5'>
+                        <button
+                            type='submit'
+                            className='btn btn-outline-dark col-12'
+                        >
                             {status === 'pending' ? (
                                 <Spinner></Spinner>
                             ) : (
                                 <span>Register</span>
-                            )}</button>
+                            )}
+                        </button>
+
+                        <div className='col-6 mt-2'>
+                            <Link to='/login'>Login instead</Link>
+                        </div>
                     </div>
                 </div>
             </div>
