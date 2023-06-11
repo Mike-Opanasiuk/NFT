@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { ICollection, IUser } from "../../react-app-env.d";
+import { Author, ICollection } from "../../react-app-env.d";
 import { makeClient } from "../../api/client";
+import { Button, ButtonToolbar, Modal } from 'react-bootstrap';
+import { Alert } from "components/Alert";
 
 export const AccountInfo = () => {
-    let [user, setUser] = useState<IUser>();
+    let [user, setUser] = useState<Author>();
     let [collections, setCollections] = useState<ICollection[]>([]);
     const navigate = useNavigate();
 
@@ -26,8 +28,38 @@ export const AccountInfo = () => {
 
     }, []);
 
+    const moneyCount = useRef<HTMLInputElement>(null);
+    let [showAlert, setShowAlert] = useState<boolean>();
+    let [alertMessage, setAlertMessage] = useState<string>("");
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const handleClose = () => {
+        setIsModalVisible(false)
+        if (!moneyCount.current?.value) return;
+        const client = makeClient("account");
+        client.post(`replenish/${moneyCount.current?.value}`, '').then((res) => {
+            console.log("Success!")
+            setAlertMessage(`${moneyCount.current?.value} ETH were successfully added.`)
+            setShowAlert(true);
+        }).catch((e: any) => {
+            setAlertMessage(`Internal server error.`)
+            setShowAlert(true);
+            console.error(e);
+        });
+    }
+    const handleShow = () => setIsModalVisible(true);
+    if (showAlert) {
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 5000);
+    }
     return (
         <div className="container rounded bg-white">
+            {showAlert === true ? (
+                <Alert message={alertMessage}></Alert>
+            ) : (
+                <span></span>
+            )}
             <div className="row">
                 <div className="col-md-3 border-right">
                     <div className="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -38,7 +70,29 @@ export const AccountInfo = () => {
                         />
                         <span className="font-weight-bold">{user?.userName}</span>
                         <span className="text-black-50">{user?.userName}@nft.com.ua</span>
-                        <span> </span>
+
+                        <Button className="nextButton mt-3" onClick={handleShow}>
+                            Replenish ETH ({user?.moneyAvailable || ''})
+                        </Button>
+
+                        <Modal show={isModalVisible} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Put ETH on your account</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <span>ETH count: </span>
+                                <input type="number" name="moneyCount"
+                                    id="moneyCount" min={0} defaultValue={0} ref={moneyCount} />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={handleClose}>
+                                    Buy
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
                 <div className="col-md-5 border-right">
@@ -117,8 +171,8 @@ export const AccountInfo = () => {
                         <div className="col-md-12">
                             <ul className="list-group">
                                 {
-                                    collections.map(collection => (
-                                        <li className="list-group-item d-flex justify-content-between align-items-center">
+                                    collections.map((collection, index) => (
+                                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                             {collection.name}
                                             <span className="badge badge-pill bg-warning">
                                                 {collection.tokens.length}

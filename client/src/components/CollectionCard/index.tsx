@@ -96,7 +96,7 @@ const CollectionCard = ({ title, author, update, image, id, onClick }: {
                         <h5 className='btn btn-link p-0' onClick={viewCollection}>{title}</h5>
                     </div>
                     <div className='d-flex align-items-center justify-content-between'>
-                        <p className='card-text'>Owner {author}</p>
+                        <p className='card-text'>by @{author}</p>
                     </div>
                     <div className='d-flex justify-content-between'>
                         {isAuth ?

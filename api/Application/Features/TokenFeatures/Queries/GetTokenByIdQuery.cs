@@ -32,6 +32,7 @@ public class GetTokenByIdHandler : IRequestHandler<GetTokenByIdQuery, TokenDto>
         var token = await unitOfWork.Tokens
             .Get()
             .Include(c => c.Author)
+            .Include(c => c.CurrentOwner)
             .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
         return token == null ?

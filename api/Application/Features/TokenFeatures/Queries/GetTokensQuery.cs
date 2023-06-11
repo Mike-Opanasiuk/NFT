@@ -38,6 +38,7 @@ public class GetTokensHandler : IRequestHandler<GetTokensQuery, TokensResponseDt
         var tokens = unitOfWork.Tokens
             .Get()
             .Include(t => t.Author)
+            .Include(t => t.CurrentOwner)
             .Include(t => t.Collection)
             .AsQueryable();
 

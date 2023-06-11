@@ -82,7 +82,7 @@ const TokenCard = ({ title, author, update, image, price, id, onClick }: {
                         <Link className='btn btn-link p-0' to={`/token/${id}`}>{title}</Link>
                     </div>
                     <div className='d-flex align-items-center justify-content-between'>
-                        <p className='card-text'>Owner {author}</p>
+                        <p className='card-text'>by @{author}</p>
                         {
                             !!price ? <p className='card-text text-success'>{price}$</p> :
                                 <p className='card-text text-white'>{' '}</p>

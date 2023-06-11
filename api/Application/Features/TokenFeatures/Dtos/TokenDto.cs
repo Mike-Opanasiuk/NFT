@@ -15,4 +15,5 @@ public class TokenDto
     public CollectionDto Collection { get; set; }
 
     public UserDto Author { get; set; }
+    public UserDto CurrentOwner { get; set; }
 }

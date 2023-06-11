@@ -9,6 +9,7 @@ export interface Author {
     id: string;
     userName: string;
     image: string;
+    moneyAvailable: number;
 }
 
 export interface ICollection {
@@ -27,6 +28,7 @@ export interface IToken {
     price: number;
     collection: string;
     author: Author;
+    currentOwner: Author;
 }
 
 

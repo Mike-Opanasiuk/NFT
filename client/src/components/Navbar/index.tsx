@@ -67,16 +67,21 @@ export const Navbar = () => {
                     <>
                         <div className='collapse navbar-collapse flex-row-reverse me-4' id='navbarColor01'>
                             <ul className='navbar-nav'>
-                                <li className='nav-item'>
-                                    <Link to='/collection/create' className='nav-link'>
-                                        + Create collection
-                                    </Link>
+
+                                <li className="nav-item dropdown">
+                                    <span className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role='button' aria-haspopup="true" aria-expanded="false">
+                                        <i className="fa fa-plus"></i> Create
+                                    </span>
+                                    <div className="dropdown-menu">
+                                        <Link to='/collection/create' className='nav-link'>
+                                            <i className="fa fa-plus"></i> Collection
+                                        </Link>
+                                        <Link to='/token/create' className='nav-link'>
+                                            <i className="fa fa-plus"></i> Token
+                                        </Link>
+                                    </div>
                                 </li>
-                                <li className='nav-item'>
-                                    <Link to='/token/create' className='nav-link'>
-                                        + Create token
-                                    </Link>
-                                </li>
+
                                 <li className='nav-item'>
                                     <Link to='/about' className='nav-link' onClick={onLogout}>
                                         Logout

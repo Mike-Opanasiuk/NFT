@@ -33,6 +33,16 @@ public class AccountController : BaseController
     }
 
     [Authorize]
+    [HttpPost("replenish/{count}")]
+    public async Task<IActionResult> ReplenishMoneyAsync([FromRoute] decimal count)
+    {
+        var userId = HttpContext.GetCurrentUserGuid();
+        await mediator.Send(new AddMoneyCommand(userId, count));
+
+        return Ok();
+    }
+
+    [Authorize]
     [HttpGet("profile")]
     public async Task<ActionResult<UserDto>> GetUserAsync()
     {
