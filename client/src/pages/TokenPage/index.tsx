@@ -16,6 +16,7 @@ const TokenPage = () => {
         var client = makeClient("tokens");
 
         client.post(`buy-now/${id}`, '').then((res) => {
+            console.log(res.data);
             navigate("/tokens");
         }).catch((e) => {
             if (e.response.status === 400) {

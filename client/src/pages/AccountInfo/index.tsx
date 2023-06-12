@@ -35,6 +35,9 @@ export const AccountInfo = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const handleClose = () => {
         setIsModalVisible(false)
+    }
+    const replenishMoney = () => {
+        setIsModalVisible(false)
         if (!moneyCount.current?.value) return;
         const client = makeClient("account");
         client.post(`replenish/${moneyCount.current?.value}`, '').then((res) => {
@@ -88,7 +91,7 @@ export const AccountInfo = () => {
                                 <Button variant="secondary" onClick={handleClose}>
                                     Close
                                 </Button>
-                                <Button variant="primary" onClick={handleClose}>
+                                <Button variant="primary" onClick={replenishMoney}>
                                     Buy
                                 </Button>
                             </Modal.Footer>

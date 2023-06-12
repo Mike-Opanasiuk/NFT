@@ -48,14 +48,14 @@ public class BuyNowTokenCommandHandler : IRequestHandler<BuyNowTokenCommand>
 
         var token = await unitOfWork.Tokens.FindAsync(tokenId);
 
-        if (buyerId == token.AuthorId)
-        {
-            throw new BadRequestRestException("You cannot buy own token.");
-        }
-
         if (token == null)
         {
             throw new BadRequestRestException("Token not found.");
+        }
+
+        if (token.CurrentOwnerId == buyerId)
+        {
+            throw new BadRequestRestException("You already own the token");
         }
 
         if (buyer.MoneyAvailable < token.Price)
