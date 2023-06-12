@@ -73,6 +73,7 @@ public class UpdateTokenHandler : IRequestHandler<UpdateTokenCommand>
         token.Name = request.Name;
         token.Description = request.Description;
         token.Price = request.Price;
+        token.CollectionId = request.CollectionId;
 
         unitOfWork.Tokens.Update(token);
         await unitOfWork.SaveChangesAsync();

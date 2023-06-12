@@ -18,6 +18,7 @@ import { tokenUtility } from './utils/tokenUtility';
 import { useDispatch } from 'react-redux';
 import { loginAction } from './store/reducers/account';
 import { useEffect } from 'react';
+import UpdateToken from 'pages/UpdateToken/UpdateToken';
 
 export const App = () => {
     useEffect(() => {
@@ -39,6 +40,7 @@ export const App = () => {
                     <Route path="/tokens" element={<TokensPage />}></Route>
                     <Route path="/token/create" element={<CreateTokenPage />}></Route>
                     <Route path="/token/:id" element={<TokenPage />}></Route>
+                    <Route path="/update-token/:id" element={<UpdateToken />}></Route>
                     <Route path="/collections" element={<CollectionsPage />}></Route>
                     <Route path="/collection/create" element={<CreateCollection />}></Route>
                     <Route path="/account" element={<AccountInfo />}></Route>
