@@ -14,10 +14,12 @@ namespace Web.Controllers;
 public class AccountController : BaseController
 {
     private readonly IMediator mediator;
+    private readonly IMapper mapper;
 
-    public AccountController(IMediator mediator)
+    public AccountController(IMediator mediator, IMapper mapper)
     {
         this.mediator = mediator;
+        this.mapper = mapper;
     }
 
     [HttpPost("register")]
@@ -43,8 +45,22 @@ public class AccountController : BaseController
     }
 
     [Authorize]
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRequest request)
+    {
+        var userId = HttpContext.GetCurrentUserGuid();
+
+        var command = mapper.Map<UpdateUserCommand>(request);
+        command.UserId = userId;
+
+        await mediator.Send(command);
+
+        return Ok();
+    }
+
+    [Authorize]
     [HttpGet("profile")]
-    public async Task<ActionResult<UserDto>> GetUserAsync()
+    public async Task<ActionResult<FullUserDto>> GetUserAsync()
     {
         var userId = HttpContext.GetCurrentUserId();
 

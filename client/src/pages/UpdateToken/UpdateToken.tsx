@@ -37,7 +37,6 @@ const UpdateCollection = () => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     const { id } = useParams();
-    const idImage: string = useAppSelector((state) => state.collectionSlice.idUpdated);
     const [userCollections, setUserCollections] = useState<ICollection[]>([]);
     const defaultCollectionText = "Choose collection";
 

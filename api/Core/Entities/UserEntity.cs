@@ -11,6 +11,11 @@ public class UserEntity : IdentityUser<Guid>, IEntity
     public DateTime UpdatedAt { get; set; }
     public string Image { get; set; }
     public decimal MoneyAvailable { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string MobilePhone { get; set; }
+    public string Country { get; set; }
+    public string Region { get; set; }
 
     // navigation properties
 

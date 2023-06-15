@@ -28,13 +28,11 @@ public class UpdateTokenCommand : UpdateTokenRequest, IRequest
 public class UpdateTokenHandler : IRequestHandler<UpdateTokenCommand>
 {
     private readonly IUnitOfWork unitOfWork;
-    private readonly IMapper mapper;
     private readonly IFileStorageService fileStorageService;
 
-    public UpdateTokenHandler(IUnitOfWork unitOfWork, IMapper mapper, IFileStorageService fileStorageService)
+    public UpdateTokenHandler(IUnitOfWork unitOfWork, IFileStorageService fileStorageService)
     {
         this.unitOfWork = unitOfWork;
-        this.mapper = mapper;
         this.fileStorageService = fileStorageService;
     }
 

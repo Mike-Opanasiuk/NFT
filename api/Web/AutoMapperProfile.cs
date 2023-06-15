@@ -15,7 +15,9 @@ public class AutoMapperProfile : Profile
     {
         /*                          Users                             */
         CreateMap<UserEntity, UserDto>().ReverseMap();
+        CreateMap<UserEntity, FullUserDto>().ReverseMap();
         CreateMap<RegisterUserCommand, UserEntity>();
+        CreateMap<UpdateUserRequest, UpdateUserCommand>();
 
         /*                          Collections                             */
         CreateMap<CreateCollectionRequest, CreateCollectionCommand>();

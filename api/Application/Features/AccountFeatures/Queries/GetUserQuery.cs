@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Features.AccountFeatures.Queries;
 
-public record GetUserQuery(string Id) : IRequest<UserDto>;
+public record GetUserQuery(string Id) : IRequest<FullUserDto>;
 
-public class GetUserHandler : IRequestHandler<GetUserQuery, UserDto>
+public class GetUserHandler : IRequestHandler<GetUserQuery, FullUserDto>
 {
     private readonly UserManager<UserEntity> _userManager;
     private readonly IMapper _mapper;
@@ -19,10 +19,10 @@ public class GetUserHandler : IRequestHandler<GetUserQuery, UserDto>
         _mapper = mapper;
     }
 
-    public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
+    public async Task<FullUserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
         var userEntity = await _userManager.FindByIdAsync(request.Id);
 
-        return _mapper.Map<UserDto>(userEntity);
+        return _mapper.Map<FullUserDto>(userEntity);
     }
 }
